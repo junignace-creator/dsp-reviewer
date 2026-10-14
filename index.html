@@ -94,7 +94,7 @@ section.pane.active{display:block;}
 .formula-item:last-child{border-bottom:none;}
 .formula-name{font-weight:700; font-size:.9rem; margin-bottom:4px;}
 .formula-eq{background:var(--code-bg); border-radius:8px; padding:9px 11px; margin-block:6px; overflow-x:auto; font-family:"STIX Two Math","STIX Two Text",serif; font-size:1.15rem; line-height:1.8;}
-.math-block{background:var(--code-bg); border-radius:10px; padding:14px 14px; margin-block:10px; overflow-x:auto; text-align:center; font-family:"STIX Two Math","STIX Two Text",serif; font-size:1.3rem; color:var(--ink); line-height:1.9;}
+.math-block{background:var(--code-bg); border-radius:10px; padding:16px 14px; margin-block:10px; overflow-x:auto; text-align:center; font-family:"STIX Two Math","STIX Two Text",serif; font-size:1.45rem; color:var(--ink); line-height:1.9;}
 .math-block .frac,.formula-eq .frac{display:inline-flex; flex-direction:column; vertical-align:middle; margin:0 .22em; text-align:center; line-height:1.25; font-size:.92em;}
 .math-block .frac .num,.formula-eq .frac .num{border-bottom:1.5px solid currentColor; padding:0 .18em .08em;}
 .math-block .frac .den,.formula-eq .frac .den{padding:.08em .18em 0;}
@@ -151,6 +151,22 @@ section.pane.active{display:block;}
 /* figures */
 figure.fig{margin:12px 0; padding:10px 8px 8px; background:var(--surface); border:1px solid var(--line); border-radius:10px; overflow-x:auto;}
 figure.fig svg{display:block; width:100%; max-width:600px; height:auto; margin:0 auto; color:var(--ink);}
+/* formula sheet: larger, proper math typography */
+#pane-formulas .card{padding:8px 18px;}
+#pane-formulas .formula-name{font-size:1rem; margin-bottom:6px;}
+#pane-formulas .math-block{font-size:1.75rem; padding:20px 16px; line-height:2;}
+#pane-formulas .formula-note{font-size:.88rem; line-height:1.5;}
+.math-block i,.formula-eq i{font-style:italic;}
+/* concepts */
+.qa{border:1px solid var(--line); border-radius:10px; background:var(--surface); margin:10px 0; padding:0;}
+.qa summary{cursor:pointer; padding:9px 12px; font-weight:600; font-size:.88rem; color:var(--accent); list-style:none;}
+.qa summary::-webkit-details-marker{display:none;}
+.qa summary::before{content:"? "; font-family:"IBM Plex Mono",monospace; font-weight:700;}
+.qa[open] summary{border-bottom:1px dashed var(--line);}
+.qa-a{padding:10px 12px; font-size:.88rem; line-height:1.6;}
+.practice{font-size:.86rem; margin:12px 0 4px; padding:8px 12px; background:var(--accent-soft); border-radius:8px;}
+.practice a{color:var(--accent); font-weight:700; cursor:pointer; text-decoration:underline; margin-inline:2px;}
+.note-sec table.trace-table{font-size:.84rem;}
 figure.fig svg.pz{max-width:340px;}
 figure.fig figcaption{font-size:.8rem; line-height:1.45; color:var(--ink-soft); margin-top:8px; text-align:center;}
 .fig text{fill:var(--ink); font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace; font-size:11px;}
@@ -178,7 +194,8 @@ footer.done{text-align:center; color:var(--muted); font-size:.8rem; padding-bloc
     <div class="progress-pill" id="progressPill">0 / 0 solved</div>
   </div>
   <nav class="tabs" id="tabs">
-    <button data-pane="problems" class="active">Sample Problems</button>
+    <button data-pane="concepts" class="active">Concepts</button>
+    <button data-pane="problems">Sample Problems</button>
     <button data-pane="design">Design Problems</button>
     <button data-pane="drill">Drill</button>
     <button data-pane="recipes">Recipes</button>
@@ -188,7 +205,13 @@ footer.done{text-align:center; color:var(--muted); font-size:.8rem; padding-bloc
 </header>
 
 <main>
-  <section class="pane active" id="pane-problems">
+  <section class="pane active" id="pane-concepts">
+    <div class="exam-note"><b>Start here if DSP is new to you.</b> Each lecture is explained in plain words: what every property <i>means</i>, a tiny example you can check by hand, and which problems to try next. Open the <i>? check yourself</i> boxes to test what you just read, then go to <i>Sample Problems</i>.</div>
+    <div class="subtabs" id="conceptTabs"></div>
+    <div id="conceptBody"></div>
+  </section>
+
+  <section class="pane" id="pane-problems">
     <div class="exam-note"><b>How to use:</b> solve on paper first, then <i>Show solution</i> and grade yourself (<i>Got it</i> / <i>Missed</i>). Progress is saved on this device and drives the <i>Drill</i> and <i>Cheat List</i> tabs. Problems follow the lecture slides' own sample/practice problems where they could be recovered, plus original ones built on the same methods. Every numeric answer was machine-checked (<code>node verify.js</code>).</div>
     <div class="subtabs" id="filtersProblems"></div>
     <div id="listProblems"></div>
@@ -230,6 +253,7 @@ footer.done{text-align:center; color:var(--muted); font-size:.8rem; padding-bloc
 <script src="data/l3.js"></script>
 <script src="data/l4.js"></script>
 <script src="data/design.js"></script>
+<script src="data/concepts.js"></script>
 <script src="data/reference.js"></script>
 <script src="app.js"></script>
 </body>

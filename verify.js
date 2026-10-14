@@ -180,4 +180,20 @@ console.log('DS-06 (D=5, 0.5)', sim([0, 0, 0, 0, -0.5], [1], d, 15).join(','));
 // ---- DS-09 radar, DS-01/02
 console.log('DS-09 range', 3e8 * 20 / (2 * 1e6), 'res@10MHz', 3e8 / (2 * 1e7), '20log13', 20 * Math.log10(13));
 console.log('DS-01 bits', Math.ceil((60 - 1.76) / 6.02), 'SQNR10', 6.02 * 10 + 1.76, 'DS-02 L', 4 / 0.001 + 1, 'bits', Math.ceil(Math.log2(4001)), 'dB', 6.02 * 12 + 1.76);
+// ---- concepts.js tiny examples
+for (let i = 0; i < 12; i++) { check('C alias n=' + i, Math.cos(2 * Math.PI * 50 * i / 75), Math.cos(2 * Math.PI * 25 * i / 75), 1e-9); check('C 5/2 vs 1/2 n=' + i, Math.round(Math.cos(2 * Math.PI * 2.5 * i)), Math.round(Math.cos(2 * Math.PI * 0.5 * i))); }
+check('C conv {1,1,1}*{1,2}', conv([1, 1, 1], [1, 2]), [1, 3, 3, 2]);
+check('C Z conv', conv([1, 1], [1, 2]), [1, 3, 2]);
+check('C y=0.5y(n-1)+delta', sim([-0.5], [1], d, 4), [1, 0.5, 0.25, 0.125]);
+check('C step', sim([-0.5], [1], u, 4), [1, 1.5, 1.75, 1.875]);
+check('C zi y(-1)=1', sim([-0.5], [1], zero, 3, { 1: 1 }), [0.5, 0.25, 0.125]);
+check('C total', sim([-0.5], [1], u, 3, { 1: 1 }), [1.5, 1.75, 1.875]);
+check('C zir y(-1)=2 -> 0.5^n', sim([-0.5], [1], zero, 5, { 1: 2 }), range(5).map(i => 0.5 ** i));
+check('C zir 0.9', sim([-0.9], [1], zero, 5, { 1: 1 }), range(5).map(i => 0.9 ** (i + 1)));
+{ const x = [1, 2, 3], r = l => x.reduce((s, vv, i) => s + vv * (x[i - l] || 0), 0); check('C rxx', [-2, -1, 0, 1, 2].map(r), [3, 8, 14, 8, 3]); }
+check('C conv x{2,0,1} h{1,0,-1} sum', conv([2, 0, 1], [1, 0, -1]).reduce((a, b) => a + b, 0), 0);
+check('C MA zero-order h', sim([-0.1], [0.2, -0.15], d, 2), [0.2, -0.13]);
+check('C sqnr bits', Math.ceil((60 - 1.76) / 6.02), 10);
+check('C ramp Z', sim([-2, 1], [0, 1], d, 5), [0, 1, 2, 3, 4]);
+check('C n 0.5^n', sim([-1, 0.25], [0, 0.5], d, 6), range(6).map(i => i * 0.5 ** i));
 console.log(fails ? `\n${fails} FAILED of ${n}` : `\nall ${n} checks passed`); process.exit(fails ? 1 : 0);

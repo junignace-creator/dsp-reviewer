@@ -18,6 +18,9 @@ The user chats with Claude about this repo to add problems, fix answers, and dri
 - Progress is in `localStorage` key `dsp-reviewer-state-v1` — don't rename it without migrating.
 - Preview: `node serve.js` → http://localhost:8123 (the file:// scheme can't load relative scripts in some previewers).
 
+- Concepts live in `data/concepts.js` (`CONCEPTS = [{label, sections:[{h, html}]}]`). Helpers: `qa(question, answer)` (collapsible self-check), `use([ids])` (links to problems), `callout(tag, html)`. Every tiny example must have a `check()` in `verify.js`.
+- The formula sheet runs `mathify()` (app.js) over each equation: single-letter variables and lowercase Greek are italicized (e, j, d, π stay upright). Don't hand-italicize in `data/reference.js`.
+
 ## Source material
 Lectures are at `C:\Users\johni\OneDrive\Documents\DSP\` (Lec1…Lec4 PDFs; **not** committed — instructor's material).
 Extract text with `pdftotext -layout` (poppler is installed under Git Bash; Python isn't).

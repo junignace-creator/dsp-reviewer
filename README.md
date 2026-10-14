@@ -11,6 +11,7 @@ A problem-focused reviewer for the first four DSP lectures, styled after the *Di
 
 ## What's inside
 
+- **Concepts** — start here if DSP is new: plain-language explanation of every idea and property per lecture, a tiny hand-checkable example each, self-check questions, and links to the matching problems.
 - **Sample Problems** (40) — worked solutions in steps, with plots/diagrams. Self-grade each with *Got it* / *Missed*.
 - **Design Problems** (9) — spec → pole/zero placement or sizing → coefficients → verification (ADC sizing, equalizer, radar, smoother, echo, moving-average notch, oscillator, notch filter).
 - **Drill** — random problem from a pool you pick (lectures, solve/design, unsolved / missed only) with a timer.
@@ -44,6 +45,7 @@ index.html        page shell + CSS (design tokens copied from the DigiComm drill
 app.js            tabs, problem cards, grading, filters, drill, cheat list
 lib.js            math helpers + SVG generators (stem plots, pole-zero plots, DF-I/DF-II block diagrams)
 data/l1.js … l4.js  problems per lecture
+data/concepts.js  plain-language concept notes (tab 1)
 data/design.js    design problems
 data/reference.js recipes, formula sheet, cheat list
 verify.js         numerical verification of the answers

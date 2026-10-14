@@ -134,6 +134,26 @@ function renderRecipes() {
     });
   });
 }
+/* italicize single-letter variables and lowercase Greek in formula text (not inside tags; e, j, d, π stay upright) */
+function mathify(html) {
+  return html.split(/(<[^>]*>)/).map(function (seg) {
+    if (seg.charAt(0) === '<') return seg;
+    return seg.replace(/[A-Za-z]+/g, function (m) { return (m.length === 1 && 'ejd'.indexOf(m) < 0) ? '<i>' + m + '</i>' : m; })
+      .replace(/[α-ωϕθλμσδφω]/g, function (c) { return c === 'π' ? c : '<i>' + c + '</i>'; });
+  }).join('');
+}
+function renderConcepts() {
+  var tabs = document.getElementById('conceptTabs'), body = document.getElementById('conceptBody'), cur = 0;
+  try { cur = +localStorage.getItem('dsp-reviewer-concept-tab') || 0; } catch (e) { }
+  if (cur >= CONCEPTS.length) cur = 0;
+  function draw() {
+    tabs.innerHTML = CONCEPTS.map(function (c, i) { return '<button type="button" data-i="' + i + '" class="' + (i === cur ? 'active' : '') + '">' + c.label + '</button>'; }).join('');
+    body.innerHTML = CONCEPTS[cur].sections.map(function (s) { return '<div class="card note-sec"><h3>' + s.h + '</h3>' + s.html + '</div>'; }).join('');
+  }
+  tabs.addEventListener('click', function (e) { var b = e.target.closest('button[data-i]'); if (!b) return; cur = +b.dataset.i; try { localStorage.setItem('dsp-reviewer-concept-tab', cur); } catch (x) { } draw(); window.scrollTo(0, 0); });
+  draw();
+}
+document.addEventListener('click', function (e) { var a = e.target.closest('a[data-goto]'); if (a) gotoProblem(a.dataset.goto); });
 function renderFormulas() {
   var root = document.getElementById('formulaList');
   root.innerHTML = '<div class="exam-note">Grouped by lecture. Anything flagged <span class="watch">⚠</span> is a spot where notation or a sign is easy to get wrong.</div>';
@@ -142,7 +162,7 @@ function renderFormulas() {
     var card = document.createElement('div'); card.className = 'card';
     g.items.forEach(function (it) {
       var d = document.createElement('div'); d.className = 'formula-item';
-      d.innerHTML = '<div class="formula-name">' + it.name + '</div><div class="math-block">' + it.eq + '</div>' + (it.note ? '<div class="formula-note">' + it.note + '</div>' : '');
+      d.innerHTML = '<div class="formula-name">' + it.name + '</div><div class="math-block">' + mathify(it.eq) + '</div>' + (it.note ? '<div class="formula-note">' + it.note + '</div>' : '');
       card.appendChild(d);
     });
     root.appendChild(card);
@@ -166,5 +186,5 @@ document.getElementById('resetBtn').addEventListener('click', function () {
 
 listP = buildList('Problems', SOLVE);
 listD = buildList('Design', DESIGN);
-buildDrill(); renderRecipes(); renderFormulas(); renderCheat(); renderMissed(); updateProgress();
+renderConcepts(); buildDrill(); renderRecipes(); renderFormulas(); renderCheat(); renderMissed(); updateProgress();
 (function () { var h = (location.hash || '').slice(1); if (h && document.getElementById('pane-' + h)) showPane(h); })();

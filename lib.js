@@ -11,6 +11,9 @@ function tbl(head, rows, hlCol) {
   return '<table class="trace-table"><tr>' + head.map(function (h) { return '<th>' + h + '</th>'; }).join('') + '</tr>' +
     rows.map(function (r) { return '<tr>' + r.map(function (c, i) { return '<td' + (i === hlCol ? ' class="hl"' : '') + '>' + c + '</td>'; }).join('') + '</tr>'; }).join('') + '</table>';
 }
+function qa(q, a) { return '<details class="qa"><summary>' + q + '</summary><div class="qa-a">' + a + '</div></details>'; }
+function callout(tag, html) { return '<div class="callout"><span class="callout-tag">' + tag + '</span>' + html + '</div>'; }
+function use(ids) { return '<p class="practice"><b>Practice →</b> ' + ids.map(function (i) { return '<a data-goto="' + i + '">' + i + '</a>'; }).join(' · ') + '</p>'; }
 function gl(v) { return (+(+v).toFixed(4)).toString().replace('-', '−'); }
 
 /* ---------- SVG primitives ---------- */
