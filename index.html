@@ -157,6 +157,11 @@ figure.fig svg{display:block; width:100%; max-width:600px; height:auto; margin:0
 #pane-formulas .math-block{font-size:1.75rem; padding:20px 16px; line-height:2;}
 #pane-formulas .formula-note{font-size:.88rem; line-height:1.5;}
 .math-block i,.formula-eq i{font-style:italic;}
+/* inline math in prose: same STIX math font as the equation boxes, slightly larger */
+.m{font-family:"STIX Two Math","STIX Two Text",serif; font-size:1.22em; line-height:1; letter-spacing:.01em; margin-inline:.06em;}
+.m i{font-style:italic;}
+.m sub,.m sup{font-size:.72em;}
+.trace-table .m{font-size:1.15em;}
 /* concepts */
 .qa{border:1px solid var(--line); border-radius:10px; background:var(--surface); margin:10px 0; padding:0;}
 .qa summary{cursor:pointer; padding:9px 12px; font-weight:600; font-size:.88rem; color:var(--accent); list-style:none;}
@@ -248,6 +253,7 @@ footer.done{text-align:center; color:var(--muted); font-size:.8rem; padding-bloc
 <footer class="done">Built from Lec 1 (Fundamentals), Lec 2 (DT signals, systems &amp; DT-LTI), Lec 3 (LCCDE) and Lec 4 (Z-transform).</footer>
 
 <script src="lib.js"></script>
+<script src="inline.js"></script>
 <script src="data/l1.js"></script>
 <script src="data/l2.js"></script>
 <script src="data/l3.js"></script>

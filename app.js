@@ -22,9 +22,9 @@ function probCard(p, onGrade) {
   div.innerHTML =
     '<div class="prob-head"><span class="prob-id">' + p.id + '</span><span class="kind-tag ' + p.kind + '">' + (p.kind === 'design' ? 'Design' : 'Solve') + '</span>' +
     '<span class="kind-tag">' + p.lec + '</span><span class="status-chip"></span></div>' +
-    '<div class="prob-title">' + p.title + '</div><div class="prob-body">' + p.q + '</div>' +
+    '<div class="prob-title">' + inlineMath(p.title) + '</div><div class="prob-body">' + inlineMath(p.q) + '</div>' +
     '<button class="reveal-btn" type="button">Show solution</button>' +
-    '<div class="answer" hidden>' + p.a +
+    '<div class="answer" hidden>' + inlineMath(p.a) +
     '<div class="grade"><span>How did you do?</span><button type="button" data-g="solved">Got it ✓</button><button type="button" data-g="missed">Missed ✗</button><button type="button" data-g="">Clear</button></div></div>';
   var chip = div.querySelector('.status-chip'), btn = div.querySelector('.reveal-btn'), ans = div.querySelector('.answer');
   function paint() { var c = chipFor(p.id); chip.className = 'status-chip ' + c[0]; chip.textContent = c[1]; }
@@ -129,7 +129,7 @@ function renderRecipes() {
     var h = document.createElement('div'); h.className = 'topic-h'; h.textContent = g.topic; root.appendChild(h);
     g.items.forEach(function (r) {
       var c = document.createElement('div'); c.className = 'card note-sec';
-      c.innerHTML = '<h3>' + r.name + '</h3>' + (r.when ? '<p style="color:var(--muted);margin:4px 0 6px">' + r.when + '</p>' : '') + '<ol>' + r.steps.map(function (s) { return '<li>' + s + '</li>'; }).join('') + '</ol>' + (r.tip ? '<div class="callout"><span class="callout-tag">Watch out</span>' + r.tip + '</div>' : '');
+      c.innerHTML = '<h3>' + r.name + '</h3>' + (r.when ? '<p style="color:var(--muted);margin:4px 0 6px">' + inlineMath(r.when) + '</p>' : '') + '<ol>' + r.steps.map(function (s) { return '<li>' + inlineMath(s) + '</li>'; }).join('') + '</ol>' + (r.tip ? '<div class="callout"><span class="callout-tag">Watch out</span>' + inlineMath(r.tip) + '</div>' : '');
       root.appendChild(c);
     });
   });
@@ -148,7 +148,7 @@ function renderConcepts() {
   if (cur >= CONCEPTS.length) cur = 0;
   function draw() {
     tabs.innerHTML = CONCEPTS.map(function (c, i) { return '<button type="button" data-i="' + i + '" class="' + (i === cur ? 'active' : '') + '">' + c.label + '</button>'; }).join('');
-    body.innerHTML = CONCEPTS[cur].sections.map(function (s) { return '<div class="card note-sec"><h3>' + s.h + '</h3>' + s.html + '</div>'; }).join('');
+    body.innerHTML = CONCEPTS[cur].sections.map(function (s) { return '<div class="card note-sec"><h3>' + s.h + '</h3>' + inlineMath(s.html) + '</div>'; }).join('');
   }
   tabs.addEventListener('click', function (e) { var b = e.target.closest('button[data-i]'); if (!b) return; cur = +b.dataset.i; try { localStorage.setItem('dsp-reviewer-concept-tab', cur); } catch (x) { } draw(); window.scrollTo(0, 0); });
   draw();
@@ -162,7 +162,7 @@ function renderFormulas() {
     var card = document.createElement('div'); card.className = 'card';
     g.items.forEach(function (it) {
       var d = document.createElement('div'); d.className = 'formula-item';
-      d.innerHTML = '<div class="formula-name">' + it.name + '</div><div class="math-block">' + mathify(it.eq) + '</div>' + (it.note ? '<div class="formula-note">' + it.note + '</div>' : '');
+      d.innerHTML = '<div class="formula-name">' + it.name + '</div><div class="math-block">' + mathify(it.eq) + '</div>' + (it.note ? '<div class="formula-note">' + inlineMath(it.note) + '</div>' : '');
       card.appendChild(d);
     });
     root.appendChild(card);
@@ -170,7 +170,7 @@ function renderFormulas() {
 }
 function renderCheat() {
   document.getElementById('cheatStatic').innerHTML = CHEAT.map(function (g) {
-    return '<div class="card note-sec"><h3>' + g.title + '</h3><ul>' + g.items.map(function (i) { return '<li>' + i + '</li>'; }).join('') + '</ul></div>';
+    return '<div class="card note-sec"><h3>' + g.title + '</h3><ul>' + g.items.map(function (i) { return '<li>' + inlineMath(i) + '</li>'; }).join('') + '</ul></div>';
   }).join('');
 }
 function renderMissed() {

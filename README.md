@@ -43,6 +43,7 @@ node verify.js       # should print: all NN checks passed
 ```
 index.html        page shell + CSS (design tokens copied from the DigiComm drill)
 app.js            tabs, problem cards, grading, filters, drill, cheat list
+inline.js         auto-formats inline math in prose (math font, italic variables)
 lib.js            math helpers + SVG generators (stem plots, pole-zero plots, DF-I/DF-II block diagrams)
 data/l1.js … l4.js  problems per lecture
 data/concepts.js  plain-language concept notes (tab 1)
