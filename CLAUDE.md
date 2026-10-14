@@ -23,6 +23,8 @@ The user chats with Claude about this repo to add problems, fix answers, and dri
 
 - Inline math in prose: `inline.js` (`inlineMath()`) auto-wraps formula-like runs (x(n), Δ = …, F<sub>s</sub>, lone variables) in `<span class="m">` (STIX math font, italic variables) at render time for problems, concepts, recipes, cheat list and formula notes. Don't hand-wrap. Sub-question labels like (b) are deliberately skipped. Fully-protected: `<svg>`, `.math-block`, `<code>`.
 
+- Study plan lives in `data/plan.js` (`PLAN.sessions[].tasks = [html, 'NNm']`). Use `P('L1-01', …)` for problem links and `C(lecture, fromSection[, toSection])` for concept links. Every problem id should appear in at least one task. Plan progress key: `dsp-reviewer-plan-v1`.
+
 ## Source material
 Lectures are at `C:\Users\johni\OneDrive\Documents\DSP\` (Lec1…Lec4 PDFs; **not** committed — instructor's material).
 Extract text with `pdftotext -layout` (poppler is installed under Git Bash; Python isn't).

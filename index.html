@@ -157,6 +157,19 @@ figure.fig svg{display:block; width:100%; max-width:600px; height:auto; margin:0
 #pane-formulas .math-block{font-size:1.75rem; padding:20px 16px; line-height:2;}
 #pane-formulas .formula-note{font-size:.88rem; line-height:1.5;}
 .math-block i,.formula-eq i{font-style:italic;}
+/* study plan */
+.night-head{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;}
+.night-tag{font-family:"IBM Plex Mono",monospace; font-size:.7rem; font-weight:700; letter-spacing:.06em; color:var(--accent); background:var(--accent-soft); border-radius:6px; padding:2px 8px; text-transform:uppercase;}
+.night-mins{font-family:"IBM Plex Mono",monospace; font-size:.75rem; color:var(--muted);}
+ul.tasklist{list-style:none; margin:10px 0 0; padding:0; display:flex; flex-direction:column; gap:8px;}
+ul.tasklist li{display:flex; gap:10px; align-items:flex-start; padding:8px 10px; border-radius:9px; border:1px solid transparent;}
+ul.tasklist li.done{background:var(--accent-soft); border-color:var(--accent);}
+ul.tasklist li.done .tasktext{text-decoration:line-through; color:var(--muted);}
+ul.tasklist input[type=checkbox]{margin-top:3px; width:17px; height:17px; accent-color:var(--accent); flex:none;}
+.tasktext{font-size:.92rem; line-height:1.5;}
+.tasktext a,.note-sec a[data-concept],.note-sec a[data-goto]{color:var(--accent); font-weight:600; cursor:pointer; text-decoration:underline;}
+.taskmin{font-family:"IBM Plex Mono",monospace; font-size:.68rem; color:var(--muted); white-space:nowrap; margin-left:auto; padding-top:3px;}
+.plan-pill{font-family:"IBM Plex Mono",monospace; font-size:.75rem; color:var(--ink-soft); background:var(--surface-2); border:1px solid var(--line); border-radius:999px; padding:3px 10px; display:inline-block; margin-bottom:12px;}
 /* inline math in prose: same STIX math font as the equation boxes, slightly larger */
 .m{font-family:"STIX Two Math","STIX Two Text",serif; font-size:1.22em; line-height:1; letter-spacing:.01em; margin-inline:.06em;}
 .m i{font-style:italic;}
@@ -199,7 +212,8 @@ footer.done{text-align:center; color:var(--muted); font-size:.8rem; padding-bloc
     <div class="progress-pill" id="progressPill">0 / 0 solved</div>
   </div>
   <nav class="tabs" id="tabs">
-    <button data-pane="concepts" class="active">Concepts</button>
+    <button data-pane="plan" class="active">Study Plan</button>
+    <button data-pane="concepts">Concepts</button>
     <button data-pane="problems">Sample Problems</button>
     <button data-pane="design">Design Problems</button>
     <button data-pane="drill">Drill</button>
@@ -210,7 +224,14 @@ footer.done{text-align:center; color:var(--muted); font-size:.8rem; padding-bloc
 </header>
 
 <main>
-  <section class="pane active" id="pane-concepts">
+  <section class="pane active" id="pane-plan">
+    <div class="exam-note"><b>The plan:</b> 8 sessions of roughly 2–2½ hours, in lecture order (each lecture builds on the last). Tick tasks off as you finish; progress is saved on this device. Blue links jump to the exact concept section or problem. <b>Tell me your exam date</b> and I will squeeze or stretch this schedule to fit.</div>
+    <div class="card note-sec" id="planLoop"></div>
+    <div id="planQuick"></div>
+    <div id="planList"></div>
+  </section>
+
+  <section class="pane" id="pane-concepts">
     <div class="exam-note"><b>Start here if DSP is new to you.</b> Each lecture is explained in plain words: what every property <i>means</i>, a tiny example you can check by hand, and which problems to try next. Open the <i>? check yourself</i> boxes to test what you just read, then go to <i>Sample Problems</i>.</div>
     <div class="subtabs" id="conceptTabs"></div>
     <div id="conceptBody"></div>
@@ -260,6 +281,7 @@ footer.done{text-align:center; color:var(--muted); font-size:.8rem; padding-bloc
 <script src="data/l4.js"></script>
 <script src="data/design.js"></script>
 <script src="data/concepts.js"></script>
+<script src="data/plan.js"></script>
 <script src="data/reference.js"></script>
 <script src="app.js"></script>
 </body>

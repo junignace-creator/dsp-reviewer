@@ -150,10 +150,44 @@ function renderConcepts() {
     tabs.innerHTML = CONCEPTS.map(function (c, i) { return '<button type="button" data-i="' + i + '" class="' + (i === cur ? 'active' : '') + '">' + c.label + '</button>'; }).join('');
     body.innerHTML = CONCEPTS[cur].sections.map(function (s) { return '<div class="card note-sec"><h3>' + s.h + '</h3>' + inlineMath(s.html) + '</div>'; }).join('');
   }
+  window.openConcept = function (i, s) { cur = i; try { localStorage.setItem('dsp-reviewer-concept-tab', cur); } catch (x) { } draw(); showPane('concepts'); var c = body.querySelectorAll('.card')[s]; if (c) c.scrollIntoView({ block: 'start' }); };
   tabs.addEventListener('click', function (e) { var b = e.target.closest('button[data-i]'); if (!b) return; cur = +b.dataset.i; try { localStorage.setItem('dsp-reviewer-concept-tab', cur); } catch (x) { } draw(); window.scrollTo(0, 0); });
   draw();
 }
-document.addEventListener('click', function (e) { var a = e.target.closest('a[data-goto]'); if (a) gotoProblem(a.dataset.goto); });
+document.addEventListener('click', function (e) {
+  var a = e.target.closest('a[data-goto]'); if (a) gotoProblem(a.dataset.goto);
+  var c = e.target.closest('a[data-concept]'); if (c) { var p = c.dataset.concept.split(':'); window.openConcept(+p[0], +p[1]); }
+});
+var PLAN_KEY = 'dsp-reviewer-plan-v1', planState = {};
+try { planState = JSON.parse(localStorage.getItem(PLAN_KEY) || '{}'); } catch (e) { planState = {}; }
+function renderPlan() {
+  document.getElementById('planLoop').innerHTML = '<h3>How to study every problem (the loop)</h3><ol>' + PLAN.loop.map(function (s) { return '<li>' + inlineMath(s) + '</li>'; }).join('') + '</ol>';
+  function taskList(prefix, tasks) {
+    return '<ul class="tasklist">' + tasks.map(function (t, i) {
+      var id = prefix + '-t' + i, on = !!planState[id];
+      return '<li class="' + (on ? 'done' : '') + '"><input type="checkbox" id="' + id + '"' + (on ? ' checked' : '') + '><label class="tasktext" for="' + id + '">' + inlineMath(t[0]) + '</label><span class="taskmin">' + t[1] + '</span></li>';
+    }).join('') + '</ul>';
+  }
+  function mins(tasks) { return tasks.reduce(function (s, t) { return s + parseInt(t[1], 10); }, 0); }
+  var q = PLAN.quick;
+  document.getElementById('planQuick').innerHTML = '<div class="card note-sec"><h3>' + q.title + '</h3><p style="color:var(--muted);margin:4px 0 0">' + q.when + '</p>' + taskList('q', q.tasks) + '</div>';
+  var list = document.getElementById('planList');
+  list.innerHTML = '<span class="plan-pill" id="planPill"></span>' + PLAN.sessions.map(function (s, n) {
+    return '<div class="card note-sec"><div class="night-head"><div><span class="night-tag">' + s.day + '</span><div style="margin-top:6px;font-weight:600">' + s.focus + '</div></div><div class="night-mins">~' + mins(s.tasks) + ' min</div></div>' + taskList('s' + n, s.tasks) + '</div>';
+  }).join('');
+  function pill() {
+    var boxes = list.querySelectorAll('input[type=checkbox]'), done = list.querySelectorAll('input[type=checkbox]:checked').length;
+    document.getElementById('planPill').textContent = 'Plan progress: ' + done + ' / ' + boxes.length + ' tasks';
+  }
+  document.getElementById('pane-plan').addEventListener('change', function (e) {
+    if (!e.target.matches('input[type=checkbox]')) return;
+    planState[e.target.id] = e.target.checked;
+    try { localStorage.setItem(PLAN_KEY, JSON.stringify(planState)); } catch (x) { }
+    e.target.closest('li').classList.toggle('done', e.target.checked);
+    pill();
+  });
+  pill();
+}
 function renderFormulas() {
   var root = document.getElementById('formulaList');
   root.innerHTML = '<div class="exam-note">Grouped by lecture. Anything flagged <span class="watch">⚠</span> is a spot where notation or a sign is easy to get wrong.</div>';
@@ -186,5 +220,5 @@ document.getElementById('resetBtn').addEventListener('click', function () {
 
 listP = buildList('Problems', SOLVE);
 listD = buildList('Design', DESIGN);
-renderConcepts(); buildDrill(); renderRecipes(); renderFormulas(); renderCheat(); renderMissed(); updateProgress();
+renderPlan(); renderConcepts(); buildDrill(); renderRecipes(); renderFormulas(); renderCheat(); renderMissed(); updateProgress();
 (function () { var h = (location.hash || '').slice(1); if (h && document.getElementById('pane-' + h)) showPane(h); })();
