@@ -25,27 +25,35 @@ var PLAN = {
       ['Read the whole <b>Cheat List</b> tab, then the <b>Recipes</b> for classify-a-system, convolution table and the inverse-Z decision tree.', '25m']
     ]
   },
+  low: {
+    title: 'Low priority (open notes: only if time is left)',
+    when: 'These are lookups or rarely asked parts. Your printed Notes already hold the formulas, so skip these unless you finish early.',
+    tasks: [
+      ['Energy/power signals and even/odd decomposition: ' + P('L1-06', 'L1-07') + ' (read ' + C(1, 5) + '). Keep only P = A²/2 for sinusoids; it is used in SQNR.', '20m'],
+      ['Correlation: ' + P('L2-08', 'L2-09') + ' (read ' + C(2, 6) + ').', '30m'],
+      ['Extra LCCDE practice: ' + P('L3-02', 'L3-03', 'L3-08', 'L3-09') + ' (second-order, repeated root, resonance, FIR vs IIR).', '30m']
+    ]
+  },
   sessions: [
     {
-      day: 'Today · Block 1 (3 h)', focus: 'Lecture 1 and the system properties of Lecture 2',
+      day: 'Today · Block 1 (3 h)', focus: 'Lecture 1 (aliasing, ADC design) and the system properties of Lecture 2',
       tasks: [
-        ['Read ' + C(1, 1, 3) + ' (signal types, sinusoids, sampling and aliasing). Say the aliasing rule out loud: subtract a whole number until f lands in −½…½.', '20m'],
-        ['Solve ' + P('L1-01', 'L1-02', 'L1-03') + ' (aliasing). Use <b>Recipes → Aliasing</b>.', '30m'],
-        ['Read ' + C(1, 4, 5) + ', then solve ' + P('L1-04', 'L1-05', 'L1-06', 'L1-07', 'L1-08') + ' (quantization, SQNR, periodicity).', '40m'],
-        ['Read ' + C(2, 1, 2) + ', then solve ' + P('L2-01', 'L2-02') + ' (fold/delay, sketches). Build a table of n against the argument every time.', '35m'],
-        ['Read ' + C(2, 3) + ', then solve ' + P('L2-03', 'L2-04') + ' (classify systems; the most testable page of Lec 2).', '40m'],
-        ['<b>Notes tab:</b> read the derivations for the sampling relation and SQNR = 6.02b + 1.76. Write both once from memory.', '15m']
+        ['Skim ' + C(1, 1, 3) + ' (sampling, aliasing, Nyquist). Say the aliasing rule out loud: subtract a whole number until f lands in −½…½.', '15m'],
+        ['Solve ' + P('L1-01', 'L1-02', 'L1-03') + ' (aliasing). Use <b>Recipes → Aliasing</b>.', '35m'],
+        ['Read ' + C(1, 4) + ', then solve ' + P('L1-05', 'DS-01', 'DS-02') + ' (quantizer, SQNR, ADC front-end design). Read the SQNR derivation in <b>Notes</b>.', '45m'],
+        ['Solve ' + P('L1-04', 'L1-08') + ' (periodicity; reading the A/D chain).', '15m'],
+        ['Skim ' + C(2, 1, 2) + ', then solve ' + P('L2-01', 'L2-02') + ' (fold/delay, sketches). Build a table of n against the argument every time; this is graphing practice.', '35m'],
+        ['Read ' + C(2, 3) + ', then solve ' + P('L2-03', 'L2-04') + ' (classify systems; the most testable page of Lec 2).', '35m']
       ]
     },
     {
       day: 'Today · Block 2 (3 h)', focus: 'Convolution, then Lecture 3 (LCCDE and realizations)',
       tasks: [
-        ['Read ' + C(2, 4, 5) + ', then solve ' + P('L2-05', 'L2-06', 'L2-07', 'L2-10') + ' (convolution, interconnections). Re-derive y = Σ x(k)h(n−k) on paper.', '40m'],
-        ['Skim ' + C(2, 6) + ' and solve ' + P('L2-08', 'L2-09') + ' (correlation; the lowest-priority topic).', '15m'],
-        ['Read ' + C(3, 1, 4) + ' (zero-input vs zero-state, homogeneous and particular solutions).', '35m'],
-        ['Solve ' + P('L3-01', 'L3-04') + ' with <b>Recipes → Direct method</b>; redo ' + P('L3-01') + ' blind. ' + P('L3-02', 'L3-03', 'L3-08') + ' only if time.', '40m'],
-        ['Read ' + C(3, 5, 6) + ', then solve ' + P('L3-05', 'L3-06', 'L3-07', 'L3-09') + ' (Direct Form I and II, block diagrams). Draw each diagram by hand.', '45m'],
-        ['<b>Notes tab:</b> read the derivations for the convolution sum and H(z) from an LCCDE.', '5m']
+        ['Read ' + C(2, 4, 5) + ', then solve ' + P('L2-05', 'L2-06', 'L2-07', 'L2-10') + ' (convolution, interconnections). Re-derive y = Σ x(k)h(n−k) on paper.', '45m'],
+        ['Read ' + C(3, 1, 4) + ' (zero-input vs zero-state, homogeneous and particular solutions).', '30m'],
+        ['Solve ' + P('L3-01', 'L3-04') + ' with <b>Recipes → Direct method</b>; redo ' + P('L3-01') + ' blind.', '40m'],
+        ['Read ' + C(3, 5, 6) + ', then solve ' + P('L3-05', 'L3-06', 'L3-07') + ' (Direct Form I and II, block diagrams). Draw each diagram by hand.', '50m'],
+        ['<b>Notes tab:</b> read the derivations for the convolution sum, H(z) from an LCCDE and Direct Form II.', '15m']
       ]
     },
     {
@@ -70,10 +78,10 @@ var PLAN = {
     {
       day: 'Wednesday night (2 h)', focus: 'Design problems and graphing (what the exam asks)',
       tasks: [
-        ['Design: ' + P('DS-01', 'DS-02', 'DS-03', 'DS-04') + ' (ADC sizing, equalizer, radar). Write each answer as spec → design → verify.', '40m'],
+        ['Design: ' + P('DS-03', 'DS-04') + ' (equalizer, radar). Write each answer as spec → design → verify.', '30m'],
         ['Design: ' + P('DS-05', 'DS-06', 'DS-07') + ' (smoother, reverb, moving average).', '35m'],
         ['<b>Graphing practice</b> (Notes tab → Graphing). Redraw from blank paper: the pole-zero plot with ROC shading for ' + P('L4-02', 'L4-10', 'L4-12') + ' and the stem plots in ' + P('L2-01', 'L2-02') + '.', '35m'],
-        ['<b>Missed only</b> drill: clear whatever is left.', '10m']
+        ['<b>Missed only</b> drill: clear whatever is left, with the Notes tab open as if it were the exam.', '20m']
       ]
     },
     {
@@ -94,3 +102,5 @@ var PLAN = {
     }
   ]
 };
+
+var LOW_PRIORITY = ['L1-06', 'L1-07', 'L2-08', 'L2-09', 'L3-02', 'L3-03', 'L3-08', 'L3-09'];

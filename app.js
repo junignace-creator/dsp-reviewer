@@ -21,7 +21,7 @@ function probCard(p, onGrade) {
   div.className = 'prob'; div.id = 'prob-' + p.id;
   div.innerHTML =
     '<div class="prob-head"><span class="prob-id">' + p.id + '</span><span class="kind-tag ' + p.kind + '">' + (p.kind === 'design' ? 'Design' : 'Solve') + '</span>' +
-    '<span class="kind-tag">' + p.lec + '</span><span class="status-chip"></span></div>' +
+    '<span class="kind-tag">' + p.lec + '</span>' + (LOW_PRIORITY.indexOf(p.id) >= 0 ? '<span class="kind-tag low">Low priority</span>' : '') + '<span class="status-chip"></span></div>' +
     '<div class="prob-title">' + inlineMath(p.title) + '</div><div class="prob-body">' + inlineMath(p.q) + '</div>' +
     '<button class="reveal-btn" type="button">Show solution</button>' +
     '<div class="answer" hidden>' + inlineMath(p.a) +
@@ -171,6 +171,8 @@ function renderPlan() {
   function mins(tasks) { return tasks.reduce(function (s, t) { return s + parseInt(t[1], 10); }, 0); }
   var q = PLAN.quick;
   document.getElementById('planQuick').innerHTML = '<div class="card note-sec"><h3>' + q.title + '</h3><p style="color:var(--muted);margin:4px 0 0">' + q.when + '</p>' + taskList('q', q.tasks) + '</div>';
+  var lw = PLAN.low;
+  document.getElementById('planQuick').innerHTML += '<div class="card note-sec low-card"><h3>' + lw.title + '</h3><p style="color:var(--muted);margin:4px 0 0">' + lw.when + '</p>' + taskList('l', lw.tasks) + '</div>';
   var list = document.getElementById('planList');
   list.innerHTML = '<span class="plan-pill" id="planPill"></span>' + PLAN.sessions.map(function (s, n) {
     return '<div class="card note-sec"><div class="night-head"><div><span class="night-tag">' + s.day + '</span><div style="margin-top:6px;font-weight:600">' + s.focus + '</div></div><div class="night-mins">~' + mins(s.tasks) + ' min</div></div>' + taskList('s' + n, s.tasks) + '</div>';
