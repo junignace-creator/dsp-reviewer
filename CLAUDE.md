@@ -25,6 +25,9 @@ The user chats with Claude about this repo to add problems, fix answers, and dri
 
 - Study plan lives in `data/plan.js` (`PLAN.sessions[].tasks = [html, 'NNm']`). Use `P('L1-01', …)` for problem links and `C(lecture, fromSection[, toSection])` for concept links. Every problem id should appear in at least one task. Plan progress key: `dsp-reviewer-plan-v1`.
 
+- Open-notes pack: the **Notes (print)** tab (`renderNotes()` in app.js) prints derivations (`DERIVE`) and graphing rules (`GRAPHS`) from `data/derive.js`, plus FORMULAS, RECIPES and CHEAT, in a 2-column print layout (`@media print` in index.html). Add new derivations to `DERIVE`.
+- Study plan is shaped to the user's exam week (6 h first day, 2 h Mon/Tue/Wed nights, none Thursday, 2 h Friday morning; exam Friday afternoon, open notes: derivations, design, graphing).
+
 ## Source material
 Lectures are at `C:\Users\johni\OneDrive\Documents\DSP\` (Lec1…Lec4 PDFs; **not** committed — instructor's material).
 Extract text with `pdftotext -layout` (poppler is installed under Git Bash; Python isn't).

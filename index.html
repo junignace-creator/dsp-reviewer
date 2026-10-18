@@ -200,6 +200,30 @@ figure.fig figcaption{font-size:.8rem; line-height:1.45; color:var(--ink-soft); 
 .fig .zero{stroke:var(--accent); stroke-width:2; fill:var(--surface);}
 
 footer.done{text-align:center; color:var(--muted); font-size:.8rem; padding-block:30px 10px;}
+
+/* Open-notes pack: compact on screen and in print */
+#notesBody{column-count:1; column-gap:22px;}
+#notesBody .nsec{break-inside:avoid; border:1px solid var(--line); border-radius:10px; padding:8px 12px; margin-bottom:10px; background:var(--surface);}
+#notesBody .nsec h3{font-size:.92rem; margin:0 0 4px;}
+#notesBody .nsec ol,#notesBody .nsec ul{margin:0; padding-left:1.2em; font-size:.82rem; line-height:1.5;}
+#notesBody .nsec li{margin-bottom:2px;}
+#notesBody .nsec .nmath{font-size:1.05rem; line-height:1.7; margin:4px 0;}
+#notesBody .topic-h{break-after:avoid; column-span:all; margin-top:14px;}
+@media print{
+  @page{margin:10mm;}
+  html,body{background:#fff !important; color:#000 !important; padding:0; max-width:none; font-size:10.5px;}
+  header.top,footer.done,.noprint,nav.tabs{display:none !important;}
+  .pane{display:none !important;}
+  #pane-notes{display:block !important;}
+  #notesBody{column-count:2; column-gap:10mm;}
+  #notesBody .nsec{border:1px solid #999; background:#fff; padding:5px 7px; margin-bottom:6px; box-shadow:none;}
+  #notesBody .nsec ol,#notesBody .nsec ul{font-size:9.6px; line-height:1.35;}
+  #notesBody .nsec h3{font-size:10.5px;}
+  #notesBody .nsec .nmath{font-size:12px; background:none;}
+  #notesBody .topic-h{color:#000; margin:8px 0 4px;}
+  .math-block{background:none !important; padding:2px 0 !important; font-size:13px !important; line-height:1.6 !important; margin-block:2px !important;}
+  .formula-note{font-size:9px;}
+}
 </style>
 </head>
 <body>
@@ -220,12 +244,13 @@ footer.done{text-align:center; color:var(--muted); font-size:.8rem; padding-bloc
     <button data-pane="recipes">Recipes</button>
     <button data-pane="formulas">Formula Sheet</button>
     <button data-pane="cheat">Cheat List</button>
+    <button data-pane="notes">Notes (print)</button>
   </nav>
 </header>
 
 <main>
   <section class="pane active" id="pane-plan">
-    <div class="exam-note"><b>The plan:</b> 8 sessions of roughly 2–2½ hours, in lecture order (each lecture builds on the last). Tick tasks off as you finish; progress is saved on this device. Blue links jump to the exact concept section or problem. <b>Tell me your exam date</b> and I will squeeze or stretch this schedule to fit.</div>
+    <div class="exam-note"><b>The plan:</b> built for your week: <b>6 h today</b> (two 3-hour blocks), <b>2 h</b> Monday, Tuesday and Wednesday nights, nothing Thursday, <b>2 h</b> Friday morning (14 h total). The exam is open notes and asks for derivations, design and graphing, so the <b>Notes (print)</b> tab is part of the plan. Tick tasks off as you finish; progress is saved on this device. Blue links jump to the exact concept section or problem. <b>Tell me your exam date</b> and I will squeeze or stretch this schedule to fit.</div>
     <div class="card note-sec" id="planLoop"></div>
     <div id="planQuick"></div>
     <div id="planList"></div>
@@ -260,6 +285,12 @@ footer.done{text-align:center; color:var(--muted); font-size:.8rem; padding-bloc
   <section class="pane" id="pane-recipes"><div id="recipeList"></div></section>
   <section class="pane" id="pane-formulas"><div id="formulaList"></div></section>
 
+  <section class="pane" id="pane-notes">
+    <div class="exam-note noprint"><b>Open-notes pack.</b> Derivations, graphing rules, recipes, the formula sheet and red flags in one compact layout. Press <b>Print</b> (choose “Save as PDF” to keep a copy), landscape or portrait, double-sided. Nothing else on the page prints.
+      <p style="margin:8px 0 0"><button class="ghost-btn" id="printBtn" type="button">Print / save as PDF</button></p></div>
+    <div id="notesBody"></div>
+  </section>
+
   <section class="pane" id="pane-cheat">
     <div class="exam-note">Last-minute list. Read the red flags first, then your own missed problems below.</div>
     <div id="cheatStatic"></div>
@@ -283,6 +314,7 @@ footer.done{text-align:center; color:var(--muted); font-size:.8rem; padding-bloc
 <script src="data/concepts.js"></script>
 <script src="data/plan.js"></script>
 <script src="data/reference.js"></script>
+<script src="data/derive.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

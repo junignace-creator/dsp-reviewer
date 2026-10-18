@@ -220,5 +220,36 @@ document.getElementById('resetBtn').addEventListener('click', function () {
 
 listP = buildList('Problems', SOLVE);
 listD = buildList('Design', DESIGN);
-renderPlan(); renderConcepts(); buildDrill(); renderRecipes(); renderFormulas(); renderCheat(); renderMissed(); updateProgress();
+
+function renderNotes() {
+  var root = document.getElementById('notesBody'), h = '';
+  function sec(title, inner) { return '<div class="nsec"><h3>' + title + '</h3>' + inner + '</div>'; }
+  function ol(a) { return '<ol>' + a.map(function (s) { return '<li>' + inlineMath(s) + '</li>'; }).join('') + '</ol>'; }
+  h += '<div class="topic-h">Part A · Derivations (how to arrive at the equation)</div>';
+  DERIVE.forEach(function (g) {
+    h += '<div class="topic-h">' + g.topic + '</div>';
+    g.items.forEach(function (d) { h += sec(d.name, ol(d.steps)); });
+  });
+  h += '<div class="topic-h">Part B · Graphing rules</div>';
+  GRAPHS.forEach(function (g) { h += sec(g.title, ol(g.steps)); });
+  h += '<div class="topic-h">Part C · Formula sheet</div>';
+  FORMULAS.forEach(function (g) {
+    h += '<div class="topic-h">' + g.topic + '</div>';
+    g.items.forEach(function (it) {
+      h += sec(it.name, '<div class="math-block nmath">' + mathify(it.eq) + '</div>' + (it.note ? '<div class="formula-note">' + inlineMath(it.note) + '</div>' : ''));
+    });
+  });
+  h += '<div class="topic-h">Part D · Recipes</div>';
+  RECIPES.forEach(function (g) {
+    h += '<div class="topic-h">' + g.topic + '</div>';
+    g.items.forEach(function (r) { h += sec(r.name, ol(r.steps) + (r.tip ? '<div class="formula-note">' + inlineMath(r.tip) + '</div>' : '')); });
+  });
+  h += '<div class="topic-h">Part E · Red flags</div>';
+  CHEAT.forEach(function (g) {
+    h += sec(g.title, '<ul>' + g.items.map(function (i) { return '<li>' + inlineMath(i) + '</li>'; }).join('') + '</ul>');
+  });
+  root.innerHTML = h;
+}
+document.getElementById('printBtn').addEventListener('click', function () { showPane('notes'); window.print(); });
+renderNotes(); renderPlan(); renderConcepts(); buildDrill(); renderRecipes(); renderFormulas(); renderCheat(); renderMissed(); updateProgress();
 (function () { var h = (location.hash || '').slice(1); if (h && document.getElementById('pane-' + h)) showPane(h); })();

@@ -27,84 +27,69 @@ var PLAN = {
   },
   sessions: [
     {
-      day: 'Session 1', focus: 'Lecture 1 · Signals, sampling and quantization',
+      day: 'Today · Block 1 (3 h)', focus: 'Lecture 1 and the system properties of Lecture 2',
       tasks: [
-        ['Read ' + C(1, 1, 2) + ': signal types, CT vs DT sinusoids. Answer both check boxes.', '20m'],
-        ['Read ' + C(1, 3) + ' (sampling, aliasing, Nyquist). Say the aliasing rule out loud: subtract a whole number until f lands in −½…½.', '20m'],
-        ['Solve ' + P('L1-01', 'L1-02', 'L1-03') + ' (aliasing). Use the <b>Recipes → Aliasing</b> steps.', '30m'],
-        ['Read ' + C(1, 4, 5) + ' (quantization, SQNR, signal classes).', '20m'],
-        ['Solve ' + P('L1-04', 'L1-05', 'L1-06', 'L1-07', 'L1-08') + '.', '30m'],
-        ['Redo every problem you marked <i>Missed</i>. Then read the Lec 1 formulas in the <b>Formula Sheet</b>.', '15m']
+        ['Read ' + C(1, 1, 3) + ' (signal types, sinusoids, sampling and aliasing). Say the aliasing rule out loud: subtract a whole number until f lands in −½…½.', '20m'],
+        ['Solve ' + P('L1-01', 'L1-02', 'L1-03') + ' (aliasing). Use <b>Recipes → Aliasing</b>.', '30m'],
+        ['Read ' + C(1, 4, 5) + ', then solve ' + P('L1-04', 'L1-05', 'L1-06', 'L1-07', 'L1-08') + ' (quantization, SQNR, periodicity).', '40m'],
+        ['Read ' + C(2, 1, 2) + ', then solve ' + P('L2-01', 'L2-02') + ' (fold/delay, sketches). Build a table of n against the argument every time.', '35m'],
+        ['Read ' + C(2, 3) + ', then solve ' + P('L2-03', 'L2-04') + ' (classify systems; the most testable page of Lec 2).', '40m'],
+        ['<b>Notes tab:</b> read the derivations for the sampling relation and SQNR = 6.02b + 1.76. Write both once from memory.', '15m']
       ]
     },
     {
-      day: 'Session 2', focus: 'Lecture 2 (part 1) · Signal operations and system properties',
+      day: 'Today · Block 2 (3 h)', focus: 'Convolution, then Lecture 3 (LCCDE and realizations)',
       tasks: [
-        ['Read ' + C(2, 1, 2) + ' (impulse, step, ramp, shifting, folding, sifting).', '20m'],
-        ['Solve ' + P('L2-01', 'L2-02') + ' (fold/delay, sketches). Build a table of n against the argument of x each time.', '30m'],
-        ['Read ' + C(2, 3) + ' (the five system properties). This is the most testable page of the lecture.', '25m'],
-        ['Solve ' + P('L2-03', 'L2-04') + ' (classify systems). Follow <b>Recipes → Classify a system</b> literally.', '35m'],
-        ['Redo missed problems; read the Lec 2 red flags in the <b>Cheat List</b>.', '15m']
+        ['Read ' + C(2, 4, 5) + ', then solve ' + P('L2-05', 'L2-06', 'L2-07', 'L2-10') + ' (convolution, interconnections). Re-derive y = Σ x(k)h(n−k) on paper.', '40m'],
+        ['Skim ' + C(2, 6) + ' and solve ' + P('L2-08', 'L2-09') + ' (correlation; the lowest-priority topic).', '15m'],
+        ['Read ' + C(3, 1, 4) + ' (zero-input vs zero-state, homogeneous and particular solutions).', '35m'],
+        ['Solve ' + P('L3-01', 'L3-04') + ' with <b>Recipes → Direct method</b>; redo ' + P('L3-01') + ' blind. ' + P('L3-02', 'L3-03', 'L3-08') + ' only if time.', '40m'],
+        ['Read ' + C(3, 5, 6) + ', then solve ' + P('L3-05', 'L3-06', 'L3-07', 'L3-09') + ' (Direct Form I and II, block diagrams). Draw each diagram by hand.', '45m'],
+        ['<b>Notes tab:</b> read the derivations for the convolution sum and H(z) from an LCCDE.', '5m']
       ]
     },
     {
-      day: 'Session 3', focus: 'Lecture 2 (part 2) · Convolution, interconnections and correlation',
+      day: 'Monday night (2 h)', focus: 'Z-transform: ROC, properties and the inverse',
       tasks: [
-        ['Read ' + C(2, 4) + ' (why convolution appears). Re-derive on paper why y = Σ x(k)h(n−k).', '25m'],
-        ['Solve ' + P('L2-05', 'L2-06') + ' (convolution). Use the length and sum checks every time.', '35m'],
-        ['Read ' + C(2, 5) + ', then solve ' + P('L2-07', 'L2-10') + ' (cascade, parallel, impulses).', '30m'],
-        ['Read ' + C(2, 6) + ', then solve ' + P('L2-08', 'L2-09') + ' (correlation).', '30m'],
-        ['Redo missed problems.', '15m']
+        ['Read ' + C(4, 1, 2) + ', then solve ' + P('L4-01', 'L4-02') + ' (finite sequences and ROC).', '30m'],
+        ['Read ' + C(4, 3, 4) + ', then solve ' + P('L4-03', 'L4-14') + ' (properties and table pairs).', '35m'],
+        ['Read ' + C(4, 5) + ' (the inverse-Z decision tree), then solve ' + P('L4-04', 'L4-05', 'L4-06') + '.', '35m'],
+        ['Solve ' + P('L4-07', 'L4-08', 'L4-15') + ' (repeated and complex poles).', '20m']
       ]
     },
     {
-      day: 'Session 4', focus: 'Lecture 3 (part 1) · Difference equations, ZIR/ZSR, the direct method',
+      day: 'Tuesday night (2 h)', focus: 'H(z), stability, one-sided Z and the first design problems',
       tasks: [
-        ['Read ' + C(3, 1, 2) + ' (what an LCCDE is; zero-input vs zero-state).', '25m'],
-        ['Read ' + C(3, 3, 4) + ' (homogeneous and particular solutions).', '30m'],
-        ['Solve ' + P('L3-01') + ' step by step with the <b>Recipes → Direct method</b>. Then redo it from scratch.', '25m'],
-        ['Solve ' + P('L3-04', 'L3-02', 'L3-03') + '.', '30m'],
-        ['Solve ' + P('L3-08') + ' (resonance and sinusoidal input).', '10m']
+        ['Read ' + C(4, 6, 7) + ' (system function, poles and zeros, one-sided Z).', '15m'],
+        ['Solve ' + P('L4-10', 'L4-17', 'L4-18') + ' (H(z), improper H, cascade).', '35m'],
+        ['Solve ' + P('L4-11', 'L4-12', 'L4-13') + ' (initial conditions, ROC vs stability, pole location).', '25m'],
+        ['Solve ' + P('L4-09', 'L4-16') + ' (convolution through Z).', '10m'],
+        ['Design: ' + P('DS-08', 'DS-09') + ' (oscillator and notch). Follow <b>Recipes → Pole-zero placement</b>.', '35m']
       ]
     },
     {
-      day: 'Session 5', focus: 'Lecture 3 (part 2) · Realizations, then the Z-transform basics',
+      day: 'Wednesday night (2 h)', focus: 'Design problems and graphing (what the exam asks)',
       tasks: [
-        ['Read ' + C(3, 5, 6) + ' (impulse response, Direct Form I and II).', '25m'],
-        ['Solve ' + P('L3-05', 'L3-06', 'L3-07') + '. Always normalize the y(n) coefficient first.', '40m'],
-        ['Solve ' + P('L3-09') + ' (recursive vs IIR).', '10m'],
-        ['Read ' + C(4, 1, 2) + ' (what the Z-transform is; the region of convergence).', '25m'],
-        ['Solve ' + P('L4-01', 'L4-02') + '.', '20m']
+        ['Design: ' + P('DS-01', 'DS-02', 'DS-03', 'DS-04') + ' (ADC sizing, equalizer, radar). Write each answer as spec → design → verify.', '40m'],
+        ['Design: ' + P('DS-05', 'DS-06', 'DS-07') + ' (smoother, reverb, moving average).', '35m'],
+        ['<b>Graphing practice</b> (Notes tab → Graphing). Redraw from blank paper: the pole-zero plot with ROC shading for ' + P('L4-02', 'L4-10', 'L4-12') + ' and the stem plots in ' + P('L2-01', 'L2-02') + '.', '35m'],
+        ['<b>Missed only</b> drill: clear whatever is left.', '10m']
       ]
     },
     {
-      day: 'Session 6', focus: 'Lecture 4 (part 1) · Properties and the inverse Z-transform',
+      day: 'Thursday', focus: 'No review. Optional 5 minutes: print the Notes tab.',
       tasks: [
-        ['Read ' + C(4, 3, 4) + ' (properties and the transform pairs).', '30m'],
-        ['Solve ' + P('L4-03', 'L4-14') + ' (properties; sinusoid, window and left-sided transforms).', '30m'],
-        ['Read ' + C(4, 5) + ' (the inverse-Z decision tree).', '20m'],
-        ['Solve ' + P('L4-04', 'L4-05', 'L4-06') + ' (long division, partial fractions, improper).', '40m'],
-        ['Solve ' + P('L4-07', 'L4-08', 'L4-09', 'L4-15', 'L4-16') + ' (repeated poles, complex poles, convolution).', '45m']
+        ['Open the <b>Notes (print)</b> tab and press Print (or save as PDF and print later). Check that the page count is what you want (about 8–10 pages double-sided).', '5m']
       ]
     },
     {
-      day: 'Session 7', focus: 'Lecture 4 (part 2) · H(z), stability, initial conditions, first design problems',
+      day: 'Friday morning (2 h)', focus: 'Final pass before the exam',
       tasks: [
-        ['Read ' + C(4, 6, 7) + ' (system function, poles and zeros, one-sided Z).', '25m'],
-        ['Solve ' + P('L4-10', 'L4-11', 'L4-17', 'L4-18') + ' (H(z), one-sided Z, cascade).', '45m'],
-        ['Solve ' + P('L4-12', 'L4-13') + ' (ROC vs stability, pole location).', '15m'],
-        ['Design problems: ' + P('DS-05', 'DS-09') + '. Follow <b>Recipes → Pole-zero placement</b>.', '35m'],
-        ['Redo missed problems.', '15m']
-      ]
-    },
-    {
-      day: 'Session 8', focus: 'Final consolidation and mock test',
-      tasks: [
-        ['Open <b>Drill</b>, set the pool to <i>Missed only</i>, and clear every problem there.', '30m'],
-        ['<b>Formula dump:</b> on blank paper, write every formula you remember for each lecture, then check against the <b>Formula Sheet</b>.', '20m'],
-        ['<b>Mock test:</b> in <b>Drill</b> choose <i>Everything</i> and finish 5 problems back to back, about 8 minutes each, without looking at solutions until you commit.', '45m'],
-        ['Remaining design problems you skipped: ' + P('DS-01', 'DS-02', 'DS-03', 'DS-04', 'DS-06', 'DS-07', 'DS-08') + '.', '40m'],
-        ['Read the <b>Cheat List</b> one last time, then stop and rest.', '10m']
+        ['<b>Missed only</b> drill: clear every problem left in the pool.', '30m'],
+        ['<b>Read your printed notes</b> like the exam is open: tab the derivations and recipes you would reach for first. Highlight anything you do not understand.', '30m'],
+        ['<b>Blind derivations:</b> without looking, derive the Z-transform of aⁿu(n), the shift property, and H(z) from an LCCDE.', '20m'],
+        ['<b>Timed mock:</b> two design problems (' + P('DS-03', 'DS-09') + ' or any you missed), 15 minutes each, then check.', '30m'],
+        ['Read the <b>Cheat List</b> red flags once, then stop and rest.', '10m']
       ]
     }
   ]
