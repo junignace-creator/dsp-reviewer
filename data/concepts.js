@@ -148,7 +148,7 @@ var CONCEPTS = [
       <h4>Linear (superposition)</h4>
       <p>A system is linear if it obeys <b>additivity</b> (response to a sum = sum of responses) and <b>homogeneity</b> (scaling the input scales the output), together:</p>
       ${mb('T[a₁x₁ + a₂x₂] = a₁T[x₁] + a₂T[x₂]')}
-      <p><b>Fast filter:</b> put in zero. If the output isn’t zero, it can’t be linear. So y = 2x + 3 fails (zero in gives 3), and so does y = x² or y = cos x.</p>
+      <p><b>Fast filter:</b> put in zero. If the output isn’t zero, it can’t be linear. So y = 2x + 3 fails (zero in gives 3), and so does y = cos x (zero in gives 1). <b>This test only rules systems out:</b> y = x² passes it (0 in gives 0) but is still not linear, since T[2x] = 4x² ≠ 2T[x] = 2x². A system that passes still needs the scaling and additivity test.</p>
 
       <h4>Time-invariant (the rules don’t change)</h4>
       <p>Do the <b>shift test</b>: delay the input by k and see if the output is just the old output delayed by k.</p>

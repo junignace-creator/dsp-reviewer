@@ -264,4 +264,10 @@ check('L4-05 residuez', [1 / (1 - 0.5), 1 / (1 - 2)], [2, -1]);
   check('L2-01 shift 8', range(30).map(i => b(i - 20)), range(30).map(i => a(i - 20 + 8)));
   check('L2-01 n=5', [a(5), b(5)], [2 / 3, 0]);
 }
+// ---- zero test: passes for x^2 but x^2 fails scaling; 2x+3 and cos x fail the zero test
+{
+  const f2 = x => x * x;
+  check('zero test x^2', f2(0), 0); check('scaling x^2 (4x^2 vs 2x^2) at x=3', [f2(2 * 3), 2 * f2(3)], [36, 18].map((q, i) => i === 1 ? 18 : 36));
+  check('zero test 2x+3', 2 * 0 + 3, 3); check('zero test cos', Math.cos(0), 1);
+}
 console.log(fails ? `\n${fails} FAILED of ${n}` : `\nall ${n} checks passed`); process.exit(fails ? 1 : 0);
