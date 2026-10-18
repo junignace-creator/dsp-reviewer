@@ -65,7 +65,8 @@ PROBLEMS.push(
   ], 3) +
     pzFig({ poles: [{ re: 0.5, im: 0, t: '½', dy: 16 }, { re: 1, im: 0, t: '1', dx: 7, dy: -9 }], zeros: [{ re: 0, im: 0, t: '(2)', dy: -10 }], roc: { type: 'ann', r1: 0.5, r2: 1 }, label: 'Poles at 1/2 and 1 with ROC 1/2<|z|<1', cap: 'Case (b): the ROC is the ring between the poles, so the pole at ½ is treated as causal and the pole at 1 as anti-causal. Two zeros sit at the origin.' }) +
     note('Part (a) matches the long-division series in L4-04: 2 − (½)ⁿ = 1, 1.5, 1.75, 1.875, … ✓. In case (c) the n = −1 sample is 0 (−2 + 2) and n = −2 gives 2 — also matching L4-04(b).') +
-    warn('In case (b) the signal is two-sided and the unit circle is in the ROC only if the ROC contains |z| = 1. The ring ½ &lt; |z| &lt; 1 does <i>not</i> contain it (the pole at z = 1 is on the boundary).')
+    warn('In case (b) the signal is two-sided and the unit circle is in the ROC only if the ROC contains |z| = 1. The ring ½ &lt; |z| &lt; 1 does <i>not</i> contain it (the pole at z = 1 is on the boundary).') +
+    note('MATLAB check: <code>[r,p,k] = residuez(b,a)</code> expands in <i>negative</i> powers of z (b = numerator, a = denominator, in powers of z⁻¹; the form used here, and the denominator order must be higher than the numerator, i.e. proper). <code>residue</code> works in <i>positive</i> powers, so apply it to X(z)/z. For this X: b = 1, a = [1 −1.5 0.5] gives r = [2 −1], p = [1 0.5]. Same A and B as above (MATLAB may list the poles in a different order).')
 },
 {
   id: 'L4-06', lec: 'L4', kind: 'solve', title: 'Improper rational X(z): divide first',

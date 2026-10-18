@@ -241,4 +241,14 @@ check('L4-17b h', sim([-3, -4], [1, 2], d, 10), range(10).map(i => 1.2 * 4 ** i 
   check('L4-18 DF2', sim([-1.6, 0.64], [1], u, 30), range(30).map(i => 25 - 20 * 0.8 ** i - 4 * (i + 1) * 0.8 ** i));
   check('L4-18 limit', 1 / (1 - 0.8) ** 2, 25);
 }
+// ---- DS-08 (d) cosine oscillator, and why y(-1)=0 cannot give a cosine
+{
+  const w = Math.PI / 5, c = 2 * Math.cos(w);
+  check('DS-08d imp', sim([-c, 1], [1, -Math.cos(w)], d, 20), range(20).map(i => Math.cos(w * i)));
+  check('DS-08d ic', sim([-c, 1], [0], zero, 20, { 1: Math.cos(w), 2: Math.cos(2 * w) }), range(20).map(i => Math.cos(w * i)));
+  check('DS-08d y(-2)=-1', sim([-c, 1], [0], zero, 20, { 1: 0, 2: -1 }), range(20).map(i => Math.sin(w * (i + 1)) / Math.sin(w)));
+  console.log('DS-08d peak 1/sin36', 1 / Math.sin(w));
+}
+// ---- L4-05 MATLAB residuez values (b=1, a=[1 -1.5 0.5]): r=[2 -1], p=[1 0.5]
+check('L4-05 residuez', [1 / (1 - 0.5), 1 / (1 - 2)], [2, -1]);
 console.log(fails ? `\n${fails} FAILED of ${n}` : `\nall ${n} checks passed`); process.exit(fails ? 1 : 0);
