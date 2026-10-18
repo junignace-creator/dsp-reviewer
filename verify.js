@@ -251,4 +251,10 @@ check('L4-17b h', sim([-3, -4], [1, 2], d, 10), range(10).map(i => 1.2 * 4 ** i 
 }
 // ---- L4-05 MATLAB residuez values (b=1, a=[1 -1.5 0.5]): r=[2 -1], p=[1 0.5]
 check('L4-05 residuez', [1 / (1 - 0.5), 1 / (1 - 2)], [2, -1]);
+// ---- quantize-one-sample recipe: range -1..1, L=8, x=0.30
+{
+  const L = 8, D = 2 / (L - 1), k = Math.round((0.30 + 1) / D), xq = -1 + k * D;
+  check('quant k', k, 5); check('quant xq', xq, 3 / 7); check('quant err', xq - 0.30, 3 / 7 - 0.30); check('quant err<=D/2', (xq - 0.30) <= D / 2 ? 1 : 0, 1);
+  check('quant L from D', 2 / D + 1, 8);
+}
 console.log(fails ? `\n${fails} FAILED of ${n}` : `\nall ${n} checks passed`); process.exit(fails ? 1 : 0);

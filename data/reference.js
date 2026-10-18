@@ -8,6 +8,9 @@ var RECIPES = [
       { name: 'Quantizer sizing and SQNR', when: 'Given range, Δ or bits.',
         steps: ['L = (x<sub>max</sub> − x<sub>min</sub>)/Δ + 1 and b = ⌈log₂L⌉ (or Δ = range/(L−1) from b).', 'Rounding: P<sub>q</sub> = Δ²/12. Truncation (mean-square): Δ²/3.', 'P<sub>x</sub> = A²/2 for a sinusoid, or (1/N)Σx².', 'SQNR = 10log(P<sub>x</sub>/P<sub>q</sub>); full-scale sine ⇒ 6.02b + 1.76 dB.'],
         tip: 'Every extra bit = +6.02 dB. State which Δ convention (range/(L−1) vs range/L) you used.' },
+      { name: 'Quantize one sample (level, code, error)', when: 'Given x, the range and L (or b): find x<sub>q</sub> and the binary code.',
+        steps: ['Δ = (x<sub>max</sub> − x<sub>min</sub>)/(L − 1), with L = 2<sup>b</sup>.', 'k = round((x − x<sub>min</sub>)/Δ). Clip to 0…L−1 if x is outside the range.', 'x<sub>q</sub> = x<sub>min</sub> + kΔ. Code = k in b-bit binary.', 'Error = x<sub>q</sub> − x, and |error| ≤ Δ/2 for rounding.'],
+        tip: 'Example: range −1…1, L = 8, x = 0.30: Δ = 2/7, k = round(1.3·3.5) = round(4.55) = 5, x<sub>q</sub> = 0.429, code 101, error 0.129 (≤ Δ/2 = 0.143). Truncation would use the floor instead of round.' },
       { name: 'Periodicity of a DT sinusoid', when: 'Is x(n) = A cos(ω₀n + φ) periodic?',
         steps: ['f = ω₀/2π.', 'Rational (k/N in lowest terms)? Yes → fundamental period N. Irrational → not periodic.', 'Sum or product of sinusoids: N = lcm of the individual periods.']
       }
@@ -80,6 +83,7 @@ var FORMULAS = [
       { name: 'Nyquist and aliasing', eq: 'F<sub>s</sub> ≥ 2F<sub>max</sub> &nbsp;&nbsp;&nbsp; F<sub>alias</sub> = F − kF<sub>s</sub>', note: 'Pick the integer k that puts F<sub>alias</sub> in [−F<sub>s</sub>/2, F<sub>s</sub>/2].' },
       { name: 'DT sinusoid periodicity', eq: 'x(n+N) = x(n) ⇔ f = ' + frac('k', 'N') + ' rational', note: 'Sum/product of sinusoids: N = lcm of the periods.' },
       { name: 'Quantization', eq: 'Δ = ' + frac('x<sub>max</sub> − x<sub>min</sub>', 'L − 1') + ', &nbsp; L = 2<sup>b</sup>, &nbsp; P<sub>q</sub> = ' + frac('Δ<sup>2</sup>', '12') + ' <span style="font-size:.7em">(rounding)</span>', note: 'Truncation: mean-square error Δ²/3. Error e<sub>q</sub>(n) = x<sub>q</sub>(n) − x(n), |e<sub>q</sub>| ≤ Δ/2 for rounding.' },
+      { name: 'Quantize a sample', eq: 'k = round' + '(' + frac('x − x<sub>min</sub>', 'Δ') + '), &nbsp; x<sub>q</sub> = x<sub>min</sub> + kΔ, &nbsp; Δ = ' + frac('x<sub>max</sub> − x<sub>min</sub>', 'L − 1'), note: 'Code = k in b-bit binary (L = 2<sup>b</sup>). Error ≤ Δ/2. Same as L = (x<sub>max</sub> − x<sub>min</sub>)/Δ + 1 solved for Δ; the +1 is outside the fraction.' },
       { name: 'SQNR', eq: 'SQNR<sub>dB</sub> = 10log<sub>10</sub>' + frac('P<sub>x</sub>', 'P<sub>q</sub>') + ', &nbsp; full-scale sine: 6.02b + 1.76', note: 'P<sub>x</sub> = (1/N)Σx²(n); a sinusoid has A²/2.' },
       { name: 'Energy and average power', eq: 'E = Σ|x(n)|<sup>2</sup>, &nbsp;&nbsp; P = lim ' + frac('1', '2N+1') + 'Σ<sub>−N</sub><sup>N</sup>|x(n)|<sup>2</sup>', note: 'Periodic: P = (1/N)Σ over one period. Energy signal: 0 &lt; E &lt; ∞ (P = 0). Power signal: 0 &lt; P &lt; ∞ (E = ∞).' },
       { name: 'Even / odd parts', eq: 'x<sub>e</sub> = ½[x(n) + x(−n)], &nbsp; x<sub>o</sub> = ½[x(n) − x(−n)]' }
