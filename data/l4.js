@@ -166,5 +166,67 @@ PROBLEMS.push(
     ['(g) double at 0.9', 'n(0.9)ⁿ', 'rises, peaks, then decays: n·0.9ⁿ peaks at n = 9 and 10 (equal, 3.487), then dies out']
   ], 2) + mb('|p| &lt; 1: decays &nbsp;&nbsp; |p| = 1: constant/oscillating &nbsp;&nbsp; |p| &gt; 1: grows') +
     note('Radius → rate of decay or growth. Angle → frequency of oscillation (θ rad/sample ⇒ F = θ·F<sub>s</sub>/2π). Negative real pole → angle π → fastest alternation. Multiplicity m → polynomial factor nᵐ⁻¹.')
+},
+{
+  id: 'L4-14', lec: 'L4', kind: 'solve', title: 'Z-transforms of sinusoids, finite windows and a left-sided exponential',
+  q: 'Find X(z) and the ROC: (a) x(n) = 2ⁿ sin(ω₀n)u(n) &nbsp;(b) x(n) = cos(ω₀n + φ)u(n) &nbsp;(c) x(n) = (½)ⁿ[u(n) − u(n−10)] &nbsp;(d) x(n) = aⁿu(k − n), k &gt; 0.',
+  a: steps([
+    '<b>(a) Scaling.</b> Start from sin ω₀n u(n) ↔ sin ω₀ z⁻¹/(1 − 2cos ω₀ z⁻¹ + z⁻²) and replace z⁻¹ by 2z⁻¹: <b>X(z) = 2 sin ω₀ z⁻¹/(1 − 4cos ω₀ z⁻¹ + 4z⁻²)</b>. The poles are 2e<sup>±jω₀</sup>, radius 2, so <b>ROC |z| &gt; 2</b>.',
+    '<b>(b) Expand the phase:</b> cos(ω₀n + φ) = cos φ cos ω₀n − sin φ sin ω₀n. Combine the two table entries: numerator = cos φ(1 − cos ω₀ z⁻¹) − sin φ sin ω₀ z⁻¹ = cos φ − z⁻¹(cos φ cos ω₀ + sin φ sin ω₀) = cos φ − cos(ω₀ − φ)z⁻¹.'
+  ]) + mb('X(z) = ' + frac('cos φ − cos(ω₀ − φ) z⁻¹', '1 − 2cos ω₀ z⁻¹ + z⁻²') + ', &nbsp; |z| &gt; 1') + steps([
+    '<b>(c) Finite window.</b> Only n = 0 … 9 are nonzero, so X(z) = Σ<sub>n=0</sub><sup>9</sup>(½z⁻¹)ⁿ = <b>(1 − (½z⁻¹)¹⁰)/(1 − ½z⁻¹)</b>. The (apparent) pole at ½ is cancelled by a zero, so the only pole left is the 9-fold pole at z = 0. <b>ROC |z| &gt; 0</b> (causal finite sequence).',
+    '<b>(d) Left-sided (right end at n = k).</b> u(k − n) = 1 for n ≤ k. Let m = k − n: X(z) = Σ<sub>m=0</sub><sup>∞</sup> a<sup>k−m</sup>z<sup>−(k−m)</sup> = (a/z)ᵏ Σ(z/a)ᵐ = <b>(a z⁻¹)ᵏ/(1 − a⁻¹z)</b>, converging only when <b>|z| &lt; |a|</b>. For k &gt; 0 the sequence is two-sided (it has samples at n = 0 … k), so z = 0 is also excluded because of the z⁻ᵏ factor: <b>0 &lt; |z| &lt; |a|</b>. (If k ≤ 0 it is purely anti-causal and |z| &lt; |a| works with z = 0 included.)'
+  ]) + note('Table rows 8–11 (slide 18) are the sinusoid entries. Whenever a phase φ appears, split with the cos/sin addition formula first, then combine over the common denominator.')
+},
+{
+  id: 'L4-15', lec: 'L4', kind: 'solve', title: 'Causal inverse with a mix of distinct and repeated poles',
+  q: 'X(z) = 1/[(1 + z⁻¹)(1 − z⁻¹)²], causal. Find x(n).',
+  a: steps([
+    'Write with unknown constants (one for each power of the repeated pole): X(z) = A/(1 + z⁻¹) + B/(1 − z⁻¹) + C/(1 − z⁻¹)².',
+    '<b>A</b> (cover up 1 + z⁻¹, set z⁻¹ = −1): A = 1/(1 + 1)² = <b>¼</b>. <b>C</b> (cover up (1 − z⁻¹)², set z⁻¹ = 1): C = 1/(1 + 1) = <b>½</b>.',
+    '<b>B</b> from the value at z⁻¹ = 0 (z → ∞): 1 = A + B + C ⇒ B = 1 − ¼ − ½ = <b>¼</b>.',
+    'Use (1 − z⁻¹)⁻² ↔ (n + 1)u(n) (from u * u):'
+  ]) + mb('x(n) = [¼(−1)<sup>n</sup> + ¼ + ½(n + 1)] u(n)') +
+    'Check: x(0) = ¼ + ¼ + ½ = 1 ✓. The denominator (1 + w)(1 − 2w + w²) = 1 − w − w² + w³ gives x(1) = x(0) = 1, and the formula gives −¼ + ¼ + 1 = 1 ✓.' +
+    warn('A double pole at p contributes (A + Bn)pⁿ. Here the repeated pole sits on the unit circle (z = 1), so x(n) contains a term that <i>grows linearly</i> (½n): a causal system with this H(z) would not be BIBO stable.')
+},
+{
+  id: 'L4-16', lec: 'L4', kind: 'solve', title: 'Convolution through Z, including a cancellation',
+  q: 'Convolve with Z-transforms: (a) x₁(n) = (⅓)ⁿu(n), x₂(n) = (½)ⁿu(n) &nbsp;(b) x₁(n) = cos(πn/3)u(n), x₂(n) = 0.5ⁿu(n).',
+  a: steps([
+    '<b>(a)</b> Y(z) = 1/[(1 − ⅓z⁻¹)(1 − ½z⁻¹)], ROC |z| &gt; ½. Residues: at the pole ⅓: 1/(1 − ½·3) = <b>−2</b>; at the pole ½: 1/(1 − ⅓·2) = <b>3</b>.',
+    '<b>y(n) = [3(½)ⁿ − 2(⅓)ⁿ]u(n)</b>. Check y(0) = 1 ✓, y(1) = 3/2 − 2/3 = 5/6 = ⅓ + ½ ✓ (the convolution sum for n = 1).',
+    '<b>(b)</b> X₁(z) = (1 − ½z⁻¹)/(1 − z⁻¹ + z⁻²) and X₂(z) = 1/(1 − ½z⁻¹). The numerator of X₁ <b>cancels</b> the pole of X₂:'
+  ]) + mb('Y(z) = X₁(z)X₂(z) = ' + frac('1', '1 − z⁻¹ + z⁻²') + ', &nbsp; |z| &gt; 1') + steps([
+    'The poles of 1 − z⁻¹ + z⁻² are e<sup>±jπ/3</sup> (2r cos θ = 1, r = 1). Using the sin ω₀ table row with ω₀ = π/3: <b>y(n) = [sin(π(n+1)/3)/sin(π/3)] u(n) = (2/√3) sin(π(n+1)/3) u(n)</b>.',
+    'Check: y(0) = 1, y(1) = 1 (= cos(π/3) + 0.5 ✓), y(2) = 0, y(3) = −1.'
+  ]) + note('A product can have a larger ROC than the overlap of the two ROCs when a pole of one is cancelled by a zero of the other. Here |z| &gt; ½ and |z| &gt; 1 overlap in |z| &gt; 1, which still holds because the pole at ½ vanished.')
+},
+{
+  id: 'L4-17', lec: 'L4', kind: 'solve', title: 'System function, poles/zeros and h(n) from a difference equation (improper H and unstable cases)',
+  q: 'Find H(z), the poles and zeros, and h(n) (causal) for: (a) y(n) = ½y(n−1) + 2x(n) + 0.5x(n−1) + x(n−2) &nbsp;(b) y(n) − 3y(n−1) − 4y(n−2) = x(n) + 2x(n−1).',
+  a: steps([
+    '<b>(a)</b> Z-transform with zero initial conditions: <b>H(z) = (2 + 0.5z⁻¹ + z⁻²)/(1 − ½z⁻¹)</b> has a degree-2 numerator over a degree-1 denominator in z⁻¹ ⇒ <b>improper</b> (M ≥ N), so divide first.',
+    'With w = z⁻¹, long division gives (w² + 0.5w + 2) ÷ (1 − 0.5w) = −2w − 5 + 7/(1 − 0.5w). So <b>H(z) = −5 − 2z⁻¹ + 7/(1 − ½z⁻¹)</b>.',
+    '<b>h(n) = −5δ(n) − 2δ(n − 1) + 7(½)ⁿu(n)</b>. Check h(0) = 2 ✓, h(1) = −2 + 3.5 = 1.5 = ½·2 + 0.5 ✓.',
+    '<b>Poles/zeros:</b> in positive powers H = (2z² + 0.5z + 1)/(z(z − ½)). <b>Poles</b> z = 0 and z = ½. <b>Zeros</b> from 2z² + 0.5z + 1 = 0: z = −0.125 ± j0.696 (complex pair, |z| = 0.707). Both poles are inside the unit circle ⇒ stable (ROC |z| &gt; ½).',
+    '<b>(b)</b> <b>H(z) = (1 + 2z⁻¹)/(1 − 3z⁻¹ − 4z⁻²) = (1 + 2z⁻¹)/[(1 − 4z⁻¹)(1 + z⁻¹)]</b>. In positive powers: z(z + 2)/[(z − 4)(z + 1)].',
+    '<b>Zeros</b> z = 0 and z = −2. <b>Poles</b> z = 4 and z = −1. Residues: at 4: (1 + ½)/(1 + ¼) = 1.2; at −1: (1 − 2)/(1 + 4) = −0.2.'
+  ]) + mb('h(n) = [1.2(4)<sup>n</sup> − 0.2(−1)<sup>n</sup>] u(n)') + steps([
+    'Check h(0) = 1 ✓, h(1) = 4.8 + 0.2 = 5 = 3·1 + 2 ✓. A pole at 4 is outside the unit circle (and −1 is on it) ⇒ the causal system is <b>unstable</b> (h grows like 4ⁿ).'
+  ]) + note('Improper H(z) just means the system has a finite-length feedforward part added to the recursive part: the extra terms are delayed impulses.')
+},
+{
+  id: 'L4-18', lec: 'L4', kind: 'solve', title: 'Cascade of two first-order sections: step response and Direct Form II',
+  q: 'Two identical sections in cascade (each: adder, a z⁻¹ delay, and a 0.8 feedback gain around the delay, so each section is v(n) = u(n) + 0.8v(n−1)). The input x(n) enters the first section, the output of the first feeds the second, and y(n) is the output of the second. (a) Find H(z). (b) Find the unit-step response (initially relaxed). (c) Draw the Direct Form II equivalent.',
+  a: steps([
+    '<b>(a)</b> Each section: H₁(z) = 1/(1 − 0.8z⁻¹). Cascade ⇒ product: <b>H(z) = 1/(1 − 0.8z⁻¹)² = 1/(1 − 1.6z⁻¹ + 0.64z⁻²)</b> (a double pole at 0.8, so stable and causal).',
+    '<b>(b)</b> Y(z) = H(z)/(1 − z⁻¹) = A/(1 − z⁻¹) + B/(1 − 0.8z⁻¹) + C/(1 − 0.8z⁻¹)². <b>A</b> = 1/(1 − 0.8)² = <b>25</b>. <b>C</b> (at z⁻¹ = 1.25) = 1/(1 − 1.25) = <b>−4</b>. <b>B</b> from y(0) = 1 ⇒ 1 = 25 + B − 4 ⇒ <b>B = −20</b>.',
+    'Use (1 − pz⁻¹)⁻² ↔ (n + 1)pⁿu(n):'
+  ]) + mb('y(n) = [25 − 20(0.8)<sup>n</sup> − 4(n + 1)(0.8)<sup>n</sup>] u(n)') + steps([
+    'Check: y(0) = 25 − 20 − 4 = 1 ✓; y(1) = 25 − 16 − 6.4 = 2.6 = 1.6·1 + 1 ✓. As n → ∞, y → 25 = H(1) = 1/(1 − 0.8)² ✓ (DC gain).',
+    '<b>(c) Direct Form II:</b> multiply out the denominator; the difference equation is y(n) = 1.6y(n−1) − 0.64y(n−2) + x(n). Since there are no zeros (b₀ = 1 only), DF-I and DF-II coincide: one shared delay line with feedback taps +1.6 and −0.64.'
+  ]) + df2Fig({ b: [1], a: [-1.6, 0.64], label: 'Direct Form II equivalent', cap: 'Direct Form II of 1/(1 − 1.6z⁻¹ + 0.64z⁻²): drawn feedback gains +1.6 on w(n−1) and −0.64 on w(n−2). Two delays, the same count as the cascade.' }) +
+    note('The cascade and the single second-order section use the same number of delays (2), but the cascade has two separate gain-0.8 loops. Multiplying the section polynomials (1 − 0.8z⁻¹)² gives the DF-II coefficients 1.6 = 2·0.8 and 0.64 = 0.8².')
 }
 );

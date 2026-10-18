@@ -196,4 +196,49 @@ check('C MA zero-order h', sim([-0.1], [0.2, -0.15], d, 2), [0.2, -0.13]);
 check('C sqnr bits', Math.ceil((60 - 1.76) / 6.02), 10);
 check('C ramp Z', sim([-2, 1], [0, 1], d, 5), [0, 1, 2, 3, 4]);
 check('C n 0.5^n', sim([-1, 0.25], [0, 0.5], d, 6), range(6).map(i => i * 0.5 ** i));
+// ---- L4-14..L4-18 (rest of the Lec 4 slide set)
+{
+  // Z-transform by truncated sum at a test point z (complex via [re,im])
+  const cmul = (a, b) => [a[0] * b[0] - a[1] * b[1], a[0] * b[1] + a[1] * b[0]];
+  const cdiv = (a, b) => { const m = b[0] * b[0] + b[1] * b[1]; return [(a[0] * b[0] + a[1] * b[1]) / m, (a[1] * b[0] - a[0] * b[1]) / m]; };
+  const cpow = (z, n) => { const r = Math.hypot(...z) ** n, t = Math.atan2(z[1], z[0]) * n; return [r * Math.cos(t), r * Math.sin(t)]; };
+  const zt = (x, z, n0, n1) => { let s = [0, 0]; for (let n = n0; n <= n1; n++) { const t = cmul([x(n), 0], cpow(z, -n)); s = [s[0] + t[0], s[1] + t[1]]; } return s; };
+  const cclose = (a, b, name, tol = 1e-6) => check(name, [a[0], a[1]], [b[0], b[1]], tol);
+  const w0 = 0.7, ph = 0.4;
+  const inv = z => cdiv([1, 0], z); // z^-1
+  // (a) 2^n sin(w0 n)u(n), ROC |z|>2: 2 sin w0 z^-1 / (1 - 4 cos w0 z^-1 + 4 z^-2); test at |z|=3
+  { const z = [2.4, 1.8], iz = inv(z), iz2 = cmul(iz, iz);
+    const num = cmul([2 * Math.sin(w0), 0], iz), den = [1 - 4 * Math.cos(w0) * iz[0] + 4 * iz2[0], -4 * Math.cos(w0) * iz[1] + 4 * iz2[1]];
+    cclose(zt(n => 2 ** n * Math.sin(w0 * n), z, 0, 400), cdiv(num, den), 'L4-14a'); }
+  // (b) cos(w0 n + phi)u(n): (cos phi - cos(w0-phi) z^-1)/(1 - 2cos w0 z^-1 + z^-2); test at |z|=1.5
+  { const z = [1.2, 0.9], iz = inv(z), iz2 = cmul(iz, iz);
+    const num = [Math.cos(ph) - Math.cos(w0 - ph) * iz[0], -Math.cos(w0 - ph) * iz[1]], den = [1 - 2 * Math.cos(w0) * iz[0] + iz2[0], -2 * Math.cos(w0) * iz[1] + iz2[1]];
+    cclose(zt(n => Math.cos(w0 * n + ph), z, 0, 800), cdiv(num, den), 'L4-14b'); }
+  // (c) (1/2)^n[u(n)-u(n-10)] = (1 - (z^-1/2)^10)/(1 - z^-1/2), any z != 0
+  { const z = [0.3, -0.4], iz = inv(z), h = [0.5 * iz[0], 0.5 * iz[1]], h10 = cpow(h, 10);
+    cclose(zt(n => 0.5 ** n * (u(n) - u(n - 10)), z, 0, 20), cdiv([1 - h10[0], -h10[1]], [1 - h[0], -h[1]]), 'L4-14c'); }
+  // (d) a^n u(k-n), a=0.8,k=3, ROC |z|<0.8: (a/z)^k/(1 - z/a); test |z|=0.5
+  { const a = 0.8, k = 3, z = [0.3, 0.4], t = cpow(cdiv([a, 0], z), k), q = [1 - z[0] / a, -z[1] / a];
+    cclose(zt(n => a ** n * (n <= k ? 1 : 0), z, -400, k), cdiv(t, q), 'L4-14d'); }
+}
+// ---- L4-15 X=1/((1+z^-1)(1-z^-1)^2)
+check('L4-15', sim([-1, -1, 1], [1], d, 12), range(12).map(i => 0.25 * (-1) ** i + 0.25 + 0.5 * (i + 1)));
+// ---- L4-16 convolutions
+check('L4-16a', conv(range(14).map(i => (1 / 3) ** i), range(14).map(i => 0.5 ** i)).slice(0, 14), range(14).map(i => 3 * 0.5 ** i - 2 * (1 / 3) ** i));
+check('L4-16b', conv(range(16).map(i => Math.cos(Math.PI * i / 3)), range(16).map(i => 0.5 ** i)).slice(0, 16), range(16).map(i => (2 / Math.sqrt(3)) * Math.sin(Math.PI * (i + 1) / 3)));
+check('L4-16b diffeq', sim([-1, 1], [1], d, 16), range(16).map(i => (2 / Math.sqrt(3)) * Math.sin(Math.PI * (i + 1) / 3)));
+// ---- L4-17 system functions
+check('L4-17a h', sim([-0.5].map(x => x), [2, 0.5, 1], d, 12).map((v, i) => v), range(12).map(i => (i === 0 ? -5 : 0) + (i === 1 ? -2 : 0) + 7 * 0.5 ** i));
+check('L4-17b h', sim([-3, -4], [1, 2], d, 10), range(10).map(i => 1.2 * 4 ** i - 0.2 * (-1) ** i));
+{ // zeros of 2z^2+0.5z+1
+  const re = -0.125, im = Math.sqrt(8 - 0.25) / 4; check('L4-17a zero', 2 * (re * re - im * im) + 0.5 * re + 1, 0); check('L4-17a zero im', 4 * re * im + 0.5 * im, 0); console.log('L4-17a |zero|', Math.hypot(re, im)); }
+// ---- L4-18 cascade of two 1/(1-0.8z^-1), step response, DF-II equivalent
+{
+  const sec = x => sim([-0.8], [1], x, 40);
+  const v = sec(u), y1 = sec(k => v[k]); // placeholder to ensure same length usage
+  const y = sim([-0.8], [1], k => sim([-0.8], [1], u, 40)[k], 40);
+  check('L4-18 step', y.slice(0, 30), range(30).map(i => 25 - 20 * 0.8 ** i - 4 * (i + 1) * 0.8 ** i));
+  check('L4-18 DF2', sim([-1.6, 0.64], [1], u, 30), range(30).map(i => 25 - 20 * 0.8 ** i - 4 * (i + 1) * 0.8 ** i));
+  check('L4-18 limit', 1 / (1 - 0.8) ** 2, 25);
+}
 console.log(fails ? `\n${fails} FAILED of ${n}` : `\nall ${n} checks passed`); process.exit(fails ? 1 : 0);

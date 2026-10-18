@@ -81,17 +81,17 @@ var PLAN = {
       day: 'Session 6', focus: 'Lecture 4 (part 1) · Properties and the inverse Z-transform',
       tasks: [
         ['Read ' + C(4, 3, 4) + ' (properties and the transform pairs).', '30m'],
-        ['Solve ' + P('L4-03') + '.', '20m'],
+        ['Solve ' + P('L4-03', 'L4-14') + ' (properties; sinusoid, window and left-sided transforms).', '30m'],
         ['Read ' + C(4, 5) + ' (the inverse-Z decision tree).', '20m'],
         ['Solve ' + P('L4-04', 'L4-05', 'L4-06') + ' (long division, partial fractions, improper).', '40m'],
-        ['Solve ' + P('L4-07', 'L4-08', 'L4-09') + ' (repeated poles, complex poles, convolution).', '30m']
+        ['Solve ' + P('L4-07', 'L4-08', 'L4-09', 'L4-15', 'L4-16') + ' (repeated poles, complex poles, convolution).', '45m']
       ]
     },
     {
       day: 'Session 7', focus: 'Lecture 4 (part 2) · H(z), stability, initial conditions, first design problems',
       tasks: [
         ['Read ' + C(4, 6, 7) + ' (system function, poles and zeros, one-sided Z).', '25m'],
-        ['Solve ' + P('L4-10', 'L4-11') + '.', '30m'],
+        ['Solve ' + P('L4-10', 'L4-11', 'L4-17', 'L4-18') + ' (H(z), one-sided Z, cascade).', '45m'],
         ['Solve ' + P('L4-12', 'L4-13') + ' (ROC vs stability, pole location).', '15m'],
         ['Design problems: ' + P('DS-05', 'DS-09') + '. Follow <b>Recipes → Pole-zero placement</b>.', '35m'],
         ['Redo missed problems.', '15m']

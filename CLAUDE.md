@@ -42,6 +42,10 @@ cos(πn/8)cos(πn/3)); the Lec2 fold/delay example uses x(n)=1+n/3 on −3…−
 condition was cut off, so the drill uses y(−1)=1. The slide's oscillator part 2 (y(−1)=0, y(−2)=−1) does not reproduce a
 cosine exactly; DS-08 derives the correct preloads.
 
+Lec 4 was re-uploaded as one 50-page deck ("Introduction" slides 1-33 + "Application to DT Signals and Systems" slides 34-50).
+L4-14 to L4-18 cover its remaining slide problems (slides 15, 19, 32b, 33, 47, 48). The slide-48 block diagram (two cascaded
+0.8 feedback sections) was recoverable, so L4-18 restores that problem (the Lec 4 "sample 2 (diagram)" replacement note above is now obsolete).
+
 ## Ideas for next sessions
 - Lecture 5+ (DTFT / frequency response, filter design) as new `data/l5.js` + update `app.js` lecture lists (`LEC_NAMES`, filter chips, drill checkboxes).
 - A "timed mock exam" mode (pick N problems across lectures, one countdown).
