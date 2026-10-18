@@ -257,4 +257,11 @@ check('L4-05 residuez', [1 / (1 - 0.5), 1 / (1 - 2)], [2, -1]);
   check('quant k', k, 5); check('quant xq', xq, 3 / 7); check('quant err', xq - 0.30, 3 / 7 - 0.30); check('quant err<=D/2', (xq - 0.30) <= D / 2 ? 1 : 0, 1);
   check('quant L from D', 2 / D + 1, 8);
 }
+// ---- L2-01 fold/delay: x(-n-4) is x(4-n) shifted 8 samples left; n=5 check
+{
+  const x = n => n >= -3 && n <= -1 ? 1 + n / 3 : n >= 0 && n <= 3 ? 1 : 0;
+  const a = n => x(4 - n), b = n => x(-n - 4);
+  check('L2-01 shift 8', range(30).map(i => b(i - 20)), range(30).map(i => a(i - 20 + 8)));
+  check('L2-01 n=5', [a(5), b(5)], [2 / 3, 0]);
+}
 console.log(fails ? `\n${fails} FAILED of ${n}` : `\nall ${n} checks passed`); process.exit(fails ? 1 : 0);

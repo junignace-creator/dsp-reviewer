@@ -121,7 +121,7 @@ var CONCEPTS = [
         ['Down-sample by M', 'x(Mn)', 'keep every M-th sample', 'x(2n) from {…}: keeps every second sample']
       ], 0)}
       ${callout('How to never get these wrong', 'Substitute into the formula, then build a table. To get x(−n − 4): for each n compute the argument −n − 4 and read x there. Never try to “move the picture” in your head when two operations are combined.')}
-      ${qa('Fold x then delay by 4, versus delay by 4 then fold: same result?', 'No. Fold-then-delay gives x(−(n−4)) = x(4−n). Delay-then-fold gives x(−n−4). The first lands on the right side of the axis, the second on the left.')}
+      ${qa('Fold x then delay by 4, versus delay by 4 then fold: same result?', 'No. Fold-then-delay gives x(−(n−4)) = x(4−n). Delay-then-fold gives x(−n−4). They differ by an 8-sample shift: x(−n−4) = x(4−(n+8)), so delay-then-fold is the fold-then-delay result moved 8 samples to the <i>left</i> (for a signal sitting around n = 0, that means right of the axis versus left of it). Test with n = 5: x(−1) versus x(−9).')}
       ${use(['L2-01', 'L2-02'])}
       `
     },
