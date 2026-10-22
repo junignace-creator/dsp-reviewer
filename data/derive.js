@@ -201,3 +201,36 @@ var RULES = [
     'Causal ⇒ ROC outside the outermost pole; stable ⇔ unit circle in ROC ⇒ all |p| &lt; 1; pole on the circle = marginal, not BIBO stable. <b>Quick tests</b> on monic f(z): f(1) &lt; 0 ⇒ real root &gt; 1 (unstable); (−1)ᴺf(−1) &lt; 0 ⇒ root &lt; −1; |a<sub>N</sub>| ≥ 1 ⇒ unstable; Σ|a<sub>k</sub>| &lt; 1 ⇒ stable. If these pass, compute the roots; they cannot prove stability alone.'
   ] }
 ];
+
+/* Z-transform properties and pairs with ROC (printed in the Notes pack). ROC of X(z) is R: r<sub>1</sub> &lt; |z| &lt; r<sub>2</sub>. */
+var ZPROPS = {
+  head: ['Property', 'Time domain', 'z-domain', 'ROC'],
+  rows: [
+    ['Linearity', 'a₁x₁(n) + a₂x₂(n)', 'a₁X₁(z) + a₂X₂(z)', 'at least R₁ ∩ R₂'],
+    ['Shift (delay k)', 'x(n − k)', 'z⁻ᵏ X(z)', 'R (0 or ∞ may be added or lost)'],
+    ['Scaling', 'aⁿ x(n)', 'X(a⁻¹z)', '|a|r₁ &lt; |z| &lt; |a|r₂'],
+    ['Time reversal', 'x(−n)', 'X(z⁻¹)', '1/r₂ &lt; |z| &lt; 1/r₁'],
+    ['Differentiation', 'n·x(n)', '−z·dX(z)/dz', 'R'],
+    ['Convolution', 'x₁(n) * x₂(n)', 'X₁(z)·X₂(z)', 'at least R₁ ∩ R₂ (bigger if a pole cancels)'],
+    ['Correlation', 'r<sub>x₁x₂</sub>(l) = x₁(l) * x₂(−l)', 'X₁(z)·X₂(z⁻¹)', 'at least R₁ ∩ (1/R₂)'],
+    ['Multiplication (windowing)', 'x₁(n)·x₂(n)', '(1/2πj)∮ X₁(v)X₂(z/v)v⁻¹dv', 'see text (convolution of transforms)'],
+    ['Initial value (causal x)', 'x(0)', 'lim<sub>z→∞</sub> X(z)', '—']
+  ]
+};
+var ZPAIRS = {
+  head: ['x(n)', 'X(z)', 'ROC'],
+  rows: [
+    ['δ(n)', '1', 'all z'],
+    ['u(n)', '1/(1 − z⁻¹)', '|z| &gt; 1'],
+    ['aⁿu(n)', '1/(1 − az⁻¹) = z/(z − a)', '|z| &gt; |a|'],
+    ['−aⁿu(−n−1)', '1/(1 − az⁻¹)', '|z| &lt; |a|'],
+    ['n·u(n)', 'z⁻¹/(1 − z⁻¹)²', '|z| &gt; 1'],
+    ['n·aⁿu(n)', 'az⁻¹/(1 − az⁻¹)²', '|z| &gt; |a|'],
+    ['−n·aⁿu(−n−1)', 'az⁻¹/(1 − az⁻¹)²', '|z| &lt; |a|'],
+    ['sin(ω₀n)u(n)', 'sin ω₀ z⁻¹/(1 − 2cos ω₀ z⁻¹ + z⁻²)', '|z| &gt; 1'],
+    ['cos(ω₀n)u(n)', '(1 − cos ω₀ z⁻¹)/(1 − 2cos ω₀ z⁻¹ + z⁻²)', '|z| &gt; 1'],
+    ['aⁿ sin(ω₀n)u(n)', 'a sin ω₀ z⁻¹/(1 − 2a cos ω₀ z⁻¹ + a²z⁻²)', '|z| &gt; |a|'],
+    ['aⁿ cos(ω₀n)u(n)', '(1 − a cos ω₀ z⁻¹)/(1 − 2a cos ω₀ z⁻¹ + a²z⁻²)', '|z| &gt; |a|'],
+    ['finite sequence (n₁ … n₂)', 'Σ x(n)z⁻ⁿ', 'all z except 0 (n &gt; 0 terms) and/or ∞ (n &lt; 0 terms)']
+  ]
+};

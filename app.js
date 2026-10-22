@@ -227,6 +227,9 @@ function renderNotes() {
   var root = document.getElementById('notesBody'), h = '';
   function sec(title, inner) { return '<div class="nsec"><h3>' + title + '</h3>' + inner + '</div>'; }
   function ol(a) { return '<ol>' + a.map(function (s) { return '<li>' + inlineMath(s) + '</li>'; }).join('') + '</ol>'; }
+  h += '<div class="topic-h">Z-transform properties and pairs (with ROC)</div>';
+  h += sec('Properties (ROC of X(z) is R: r₁ &lt; |z| &lt; r₂)', '<div class="ztbl">' + inlineMath(tbl(ZPROPS.head, ZPROPS.rows, 0)) + '</div>');
+  h += sec('Common transform pairs', '<div class="ztbl">' + inlineMath(tbl(ZPAIRS.head, ZPAIRS.rows, 0)) + '</div>');
   h += '<div class="topic-h">Quick rules (traps and shortcuts)</div>';
   RULES.forEach(function (g) { h += sec(g.title, ol(g.steps)); });
   h += '<div class="topic-h">Part A · Derivations (how to arrive at the equation)</div>';

@@ -260,6 +260,14 @@ footer.done{text-align:center; color:var(--muted); font-size:.8rem; padding-bloc
   body.compact .nprob .math-block{font-size:8px !important; padding:0 !important;}
   body.compact .fig text{font-size:11px;}
 }
+
+#notesBody .ztbl table{width:100%; border-collapse:collapse; font-size:.78rem;}
+#notesBody .ztbl th,#notesBody .ztbl td{border:1px solid var(--line); padding:2px 5px; text-align:left;}
+@media print{
+  #notesBody .ztbl table{font-size:8.5px;}
+  body.compact #notesBody .ztbl table{font-size:6.2px;}
+  body.compact #notesBody .ztbl th,body.compact #notesBody .ztbl td{padding:0 2px; border:.3px solid #888;}
+}
 </style>
 </head>
 <body>
