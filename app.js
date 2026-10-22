@@ -252,10 +252,21 @@ function renderNotes() {
   CHEAT.forEach(function (g) {
     h += sec(g.title, '<ul>' + g.items.map(function (i) { return '<li>' + inlineMath(i) + '</li>'; }).join('') + '</ul>');
   });
+  function probs(title, list) {
+    var o = '<div class="topic-h">' + title + '</div>';
+    list.forEach(function (p) {
+      o += '<div class="nsec nprob"><h3>' + p.id + ' · ' + inlineMath(p.title) + '</h3><div class="nq">' + inlineMath(p.q) + '</div><div class="na">' + inlineMath(p.a) + '</div></div>';
+    });
+    return o;
+  }
+  var okP = function (p) { return LOW_PRIORITY.indexOf(p.id) < 0; };
+  h += '<div id="notesProblems">' + probs('Part F · Design problems (worked)', PROBLEMS.filter(function (p) { return p.kind === 'design'; })) +
+    probs('Part G · Solved problems (worked, with figures)', PROBLEMS.filter(function (p) { return p.kind === 'solve' && okP(p); })) + '</div>';
   root.innerHTML = h;
 }
 document.getElementById('printBtn').addEventListener('click', function () { document.body.classList.remove('compact'); showPane('notes'); window.print(); });
+document.getElementById('printAllBtn').addEventListener('click', function () { document.body.classList.add('compact', 'withprob'); showPane('notes'); window.print(); });
 document.getElementById('printCompactBtn').addEventListener('click', function () { document.body.classList.add('compact'); showPane('notes'); window.print(); });
-window.addEventListener('afterprint', function () { document.body.classList.remove('compact'); });
+window.addEventListener('afterprint', function () { document.body.classList.remove('compact', 'withprob'); });
 renderNotes(); renderPlan(); renderConcepts(); buildDrill(); renderRecipes(); renderFormulas(); renderCheat(); renderMissed(); updateProgress();
 (function () { var h = (location.hash || '').slice(1); if (h && document.getElementById('pane-' + h)) showPane(h); })();

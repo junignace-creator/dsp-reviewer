@@ -239,6 +239,27 @@ footer.done{text-align:center; color:var(--muted); font-size:.8rem; padding-bloc
   body.compact .formula-note{font-size:6px;}
   body.compact .frac{font-size:.9em;}
 }
+
+/* worked problems in the printed pack (only with "Print everything") */
+#notesProblems{display:none;}
+@media print{
+  body.withprob #notesProblems{display:block;}
+  body.compact #notesProblems .nprob{break-inside:auto;}
+  body.compact .nprob .nq{font-size:6.6px; font-style:italic; line-height:1.22; margin-bottom:1px;}
+  body.compact .nprob .na{font-size:6.4px; line-height:1.2;}
+  body.compact .nprob ol.steps{margin:1px 0 1px 1.1em; padding:0;}
+  body.compact .nprob ol.steps li{margin-bottom:1px;}
+  body.compact .nprob table{font-size:6px; border-collapse:collapse; margin:1px 0;}
+  body.compact .nprob td,body.compact .nprob th{padding:0 2px; border:.3px solid #888;}
+  body.compact .nprob figure.fig{margin:2px 0; padding:1px; border:.3px solid #aaa; background:none; break-inside:avoid;}
+  body.compact .nprob figure.fig svg{max-width:100%; width:100%;}
+  body.compact .nprob figure.fig svg.pz{max-width:42% !important;}
+  body.compact .nprob figure.fig svg{max-height:34mm;}
+  body.compact .nprob figure.fig figcaption{font-size:5.4px; margin-top:0; line-height:1.15;}
+  body.compact .nprob .formula-note,body.compact .nprob .warn{font-size:6px;}
+  body.compact .nprob .math-block{font-size:8px !important; padding:0 !important;}
+  body.compact .fig text{font-size:11px;}
+}
 </style>
 </head>
 <body>
@@ -302,7 +323,7 @@ footer.done{text-align:center; color:var(--muted); font-size:.8rem; padding-bloc
 
   <section class="pane" id="pane-notes">
     <div class="exam-note noprint"><b>Open-notes pack.</b> Derivations, graphing rules, recipes, the formula sheet and red flags in one compact layout. Press <b>Print</b> (choose “Save as PDF” to keep a copy), landscape or portrait, double-sided. Nothing else on the page prints.
-      <p style="margin:8px 0 0"><button class="ghost-btn" id="printBtn" type="button">Print / save as PDF</button> <button class="ghost-btn" id="printCompactBtn" type="button">Print compact (small font, landscape, few pages)</button></p></div>
+      <p style="margin:8px 0 0"><button class="ghost-btn" id="printBtn" type="button">Print / save as PDF</button> <button class="ghost-btn" id="printAllBtn" type="button">Print everything (compact + worked problems and drawings)</button> <button class="ghost-btn" id="printCompactBtn" type="button">Print compact (small font, landscape, few pages)</button></p></div>
     <div id="notesBody"></div>
   </section>
 
