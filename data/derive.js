@@ -172,3 +172,32 @@ var GRAPHS = [
     ]
   }
 ];
+
+/* Quick rules: the traps and shortcuts that came up while studying. Printed first in the Notes tab. */
+var RULES = [
+  { title: 'Sampling and the ADC', steps: [
+    'f = F/F<sub>s</sub>. Subtract the nearest whole number so f′ ∈ [−½, ½]; alias F′ = |f′|·F<sub>s</sub>. <b>sin flips sign if f′ &lt; 0</b>, cos does not. Tones with the same f′ add (3 + 10 = 13).',
+    'D/A output: F = f′·F<sub>s</sub> (only frequencies inside ±F<sub>s</sub>/2 come out). Out-of-band noise folds into the band, so filter <b>before</b> the ADC: pass edge B, stop edge <b>F<sub>s</sub> − B</b>, transition band = F<sub>s</sub> − 2B (≥ 0, so F<sub>s</sub> &gt; 2B in practice).',
+    'Quantizer: Δ = R/(L − 1) (from L = R/Δ + 1; the +1 is <i>outside</i> the fraction); L = 2<sup>b</sup>, b = ⌈log₂L⌉. Quantize x: k = round((x − x<sub>min</sub>)/Δ), x<sub>q</sub> = x<sub>min</sub> + kΔ, code = k in binary, error ≤ Δ/2. Sine range = 2A, P = A²/2. <b>8 bits = 1 byte</b> (kbit/s rate vs kB storage).'
+  ] },
+  { title: 'Shifts, folds, impulses, windows', steps: [
+    'Every operation <b>replaces every n</b> in the current formula: delay k → n − k (slides right); advance → n + k; fold → −n. Apply in the order stated: fold-then-delay-4 = x(−(n−4)) = x(4−n); delay-then-fold = x(−n−4) (that is the first result moved 8 left).',
+    'δ(n − k) sits at n = k. u(n) = δ(n) + δ(n−1) + δ(n−2) + … (n = 0, 1, 2, …). u(n+3) − u(n−4) = 1 for −3 ≤ n ≤ 3 (7 samples). Fold/delay on a formula, e.g. 1 + n/3 → 1 + (n−4)/3.',
+    'Linearity zero-test only <b>rules out</b>: y = 2x + 3 and cos x fail; y = x² passes it but is still non-linear (T[2x] ≠ 2T[x]). Delay = x(n−k); a pure delay is time-invariant, n·x(n) and x(2n) are not.'
+  ] },
+  { title: 'Convolution and impulse response', steps: [
+    'y(n) = Σ x(k)h(n−k): for each n use every pair whose indices <b>add up to n</b>. Length L<sub>x</sub> + L<sub>h</sub> − 1, start = sum of the starts, check Σy = Σx·Σh. Equals polynomial multiplication in z⁻¹.',
+    'Finite geometric sum Σ<sub>k=0</sub><sup>n</sup> rᵏ = (rⁿ⁺¹ − 1)/(r − 1). Example: (½)ⁿ * (¼)ⁿ = (¼)ⁿ(2ⁿ⁺¹ − 1). h(n) for x = δ(n): at every step add the <b>feedback term</b> (coefficient × previous h) <b>and</b> the input terms; after the input ends h(n) = p·h(n−1).',
+    'Each input impulse launches a scaled, delayed copy of h: x = −δ(n+1) + 2δ(n) + 3δ(n−2) ⇒ y = −h(n+1) + 2h(n) + 3h(n−2). Exponent algebra: aⁿ⁺¹ = a·aⁿ; combine only <b>like terms</b> (same base): 0.5·0.5ⁿ − 0.5ⁿ = −0.5·0.5ⁿ, but 0.5ⁿ − 1ⁿ = 0.5ⁿ − 1.'
+  ] },
+  { title: 'LCCDE, ZIR/ZSR and realizations', steps: [
+    'Solve for y(n) to recurse: y(n) = −Σa<sub>k</sub>y(n−k) + Σb<sub>m</sub>x(n−m). Normalize so y(n) has coefficient 1; <b>a<sub>k</sub> = coefficient next to y(n−k) on the left</b>; drawn feedback gain = <b>−a<sub>k</sub></b>. Fill a table n = 0, 1, 2 (needs y(−1), …).',
+    'Homogeneous: λⁿ, root of λᴺ + a₁λᴺ⁻¹ + … + a<sub>N</sub> = 0. y + 0.5y(n−1) = x has λ = <b>−0.5</b> (sign!). ZIR: x = 0 with the given y(−1); ZSR: y(−1) = 0; total = ZI + ZS. Fit C with y(0) from the recursion. Transient = decaying part, steady state = forced part (H(1) × input).',
+    'DF-I uses M + N delays, DF-II uses max(M, N). Missing term ⇒ coefficient 0 and no tap.'
+  ] },
+  { title: 'Z-transform, poles and stability', steps: [
+    'Replace n by (n − k) in time ⇒ z⁻ᵏ in z. Multiply by zᴺ to get positive powers; the list [1, a₁, a₂, a₃] becomes <b>z³ + a₁z² + a₂z + a₃</b> (same order, a₃ is the constant). <b>w = z⁻¹</b> trick to factor: (1 − ½w)(1 − ¼w) etc.; try ±1, ±2, ±½ as roots, divide out.',
+    'Calculator polynomial mode: enter a, b, c, d for ax³ + bx² + cx + d, use 0 for a missing power. Complex poles come in conjugate pairs (same magnitude): <b>magnitude</b> decides growth, angle only sets frequency.',
+    'Causal ⇒ ROC outside the outermost pole; stable ⇔ unit circle in ROC ⇒ all |p| &lt; 1; pole on the circle = marginal, not BIBO stable. <b>Quick tests</b> on monic f(z): f(1) &lt; 0 ⇒ real root &gt; 1 (unstable); (−1)ᴺf(−1) &lt; 0 ⇒ root &lt; −1; |a<sub>N</sub>| ≥ 1 ⇒ unstable; Σ|a<sub>k</sub>| &lt; 1 ⇒ stable. If these pass, compute the roots; they cannot prove stability alone.'
+  ] }
+];

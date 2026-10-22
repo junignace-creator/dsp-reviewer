@@ -270,4 +270,13 @@ check('L4-05 residuez', [1 / (1 - 0.5), 1 / (1 - 2)], [2, -1]);
   check('zero test x^2', f2(0), 0); check('scaling x^2 (4x^2 vs 2x^2) at x=3', [f2(2 * 3), 2 * f2(3)], [36, 18].map((q, i) => i === 1 ? 18 : 36));
   check('zero test 2x+3', 2 * 0 + 3, 3); check('zero test cos', Math.cos(0), 1);
 }
+// ---- cheat-sheet rules
+check('conv (1/2)^n*(1/4)^n', conv(range(12).map(i => 0.5 ** i), range(12).map(i => 0.25 ** i)).slice(0, 12), range(12).map(i => 0.25 ** i * (2 ** (i + 1) - 1)));
+check('window u(n+3)-u(n-4)', range(15).map(i => u(i - 7 + 3) - u(i - 7 - 4)), range(15).map(i => (i - 7 >= -3 && i - 7 <= 3 ? 1 : 0)));
+check('window count', range(15).map(i => u(i - 7 + 3) - u(i - 7 - 4)).reduce((a, b) => a + b, 0), 7);
+check('lccde pole -0.5', sim([0.5], [1], zero, 6, { 1: 2 }), range(6).map(i => -((-0.5) ** i)));
+// f(1), f(-1) tests: L3-05 z^3+0.5z^2-2, the practice cubic z^3-z/3+2/3
+check('f(1) L3-05 <0', (1 + 0.5 - 2) < 0 ? 1 : 0, 1);
+check('f(-1) practice =0', -1 + 1 / 3 + 2 / 3, 0);
+check('prod roots practice', 1 * (0.5 * 0.5 + 0.6454972243679028 ** 2) , 2 / 3);
 console.log(fails ? `\n${fails} FAILED of ${n}` : `\nall ${n} checks passed`); process.exit(fails ? 1 : 0);

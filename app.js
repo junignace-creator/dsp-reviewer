@@ -227,6 +227,8 @@ function renderNotes() {
   var root = document.getElementById('notesBody'), h = '';
   function sec(title, inner) { return '<div class="nsec"><h3>' + title + '</h3>' + inner + '</div>'; }
   function ol(a) { return '<ol>' + a.map(function (s) { return '<li>' + inlineMath(s) + '</li>'; }).join('') + '</ol>'; }
+  h += '<div class="topic-h">Quick rules (traps and shortcuts)</div>';
+  RULES.forEach(function (g) { h += sec(g.title, ol(g.steps)); });
   h += '<div class="topic-h">Part A · Derivations (how to arrive at the equation)</div>';
   DERIVE.forEach(function (g) {
     h += '<div class="topic-h">' + g.topic + '</div>';
@@ -252,6 +254,8 @@ function renderNotes() {
   });
   root.innerHTML = h;
 }
-document.getElementById('printBtn').addEventListener('click', function () { showPane('notes'); window.print(); });
+document.getElementById('printBtn').addEventListener('click', function () { document.body.classList.remove('compact'); showPane('notes'); window.print(); });
+document.getElementById('printCompactBtn').addEventListener('click', function () { document.body.classList.add('compact'); showPane('notes'); window.print(); });
+window.addEventListener('afterprint', function () { document.body.classList.remove('compact'); });
 renderNotes(); renderPlan(); renderConcepts(); buildDrill(); renderRecipes(); renderFormulas(); renderCheat(); renderMissed(); updateProgress();
 (function () { var h = (location.hash || '').slice(1); if (h && document.getElementById('pane-' + h)) showPane(h); })();
